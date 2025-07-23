@@ -7,176 +7,110 @@
 
 {% comment %} 在此建立CSS {% endcomment %}
 {% block customize_style %}
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: 'Roboto','Noto Sans TC', sans-serif;
-}
-body{
-  background-color: #FCF3CF;
-  font-family: sans-serif;
-}
-.table-container {
-  padding: 0;
-  margin: 5px auto 0;
-}
-.heading{
-  font-size: 40px;
-  text-align:center;
-  color: #f1f1f1;
-  margin-bottom: 40px;
-}
-.table{
-  width:100%;
-  border-collape:collape;
-}
-.table thead {
-  background-color: PaleTurquoise;
-}
-.table thead tr th{
-  font-size:18px;
-  font-weight: 600;
-  color:#000;
-  opacity: 1;
-  padding:12px;
-  letter-spacing: 0.35px;
-  vertical-align:middle;
-  text-align: center;
-  border: 1px solid #2E4053;
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0eafc 100%);
+  font-family: "Noto Sans TC", Roboto, Arial, "Microsoft JhengHei", "微軟正黑體", sans-serif;
 }
 
-.table thead tr th:nth-child(1){width: 3%;} 
-.table tbody tr td{
-  font-size:16px;
+.heading {
+  font-size: 2.5rem;
+  color: #2d4059;
   font-weight: bold;
-  color:#17202A;
-  background-color: #F4F6F6;
-  padding:8px;
-  letter-spacing: 0.35px;
-  text-align:center;
-  vertical-align: middle;
-    border: 1px solid #2E4053;
-  }
-  .table tbody tr td:nth-child(1){
-    text-align: left;
-    font-size:16px;
-    color:#17202A;
-  }
-  .table .text_open{
-    font-size:14px;
-    font-weight: bold;
-    letter-spacing: 0.35px;
-    color: #ff1046;
-  }
-  .table tbody tr td:nth-child(2){
-    text-align: left;
-  }
-  .table tbody tr td .btn{
-    width: 40px;
-    text-decoration: none;
-    line-height: 35px;
-    display: inline-block;
-    background-color: #ff1046;
-    font-weight: medium;
-    color: #ffffff;
-    text-align: center;
-    vertical-align: middle;
-    user-select:none;
-    border: 1px solid transparent;
-    font-size:14px;
-    opacity: 1;
-  }
-  .table tbody tr td a{
-    color: #0B3DD9;
-    font-weight: border;
-  }
-  .table-accordion{display: none; }
-  .btnCircle {
-    border-radius: 50% ;
-    padding: 1vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:5vw;
-    height:5vw; 
-    font-size: 3vw;
-    outline:none;
-    border: none;
-    text-decoration: none;
-  }
-  
-  .btnBackgroundColor{
-    background: green;
-  }
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #30aadd;
+  padding-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
 
-  .icon__pdf { font-size:12pt; font-weight:700;  line-height: 30px;  border:3px double DarkBlue;  border-radius:50%;  text-align:center;padding: 0px 2px; margin: 0px; color: white;text-decoration: none;}
-  .icon__view { font-size:12pt; font-weight:700;  line-height: 30px;  border:3px double DarkBlue;  border-radius:5px;  text-align:center;padding: 0px 2px; margin: 0px; color: white;text-decoration: none;}
-  .icon__yfratingscale { background-color: blue; }
-  .icon__deedtax { background-color: red; }
-  .icon__realestateregistration { background-color: green; }
-  .icon__complaint { background-color: black; }
-  .icon__letter { background-color: purple; }
-  .icon__coowner { background-color: DarkOrange; }
-  .icon__view__grey {background-color: lightgrey; color: black;}
-  
-  @media (max-width:764px){
-    .table-container{display: none;}
-    .table-accordion{display: block; }
-    .accordion {
-      background-color: #eee;
-      color: #444;
-      cursor: pointer;
-      padding: 10px;
-      margin-bottom: 3px;
-      width: 100%;
-      border: 1px solid black;
-      text-align: left;
-      outline: none;
-      font-size: 15px;
-      font-weight: 500;
-      transition: 0.4s;
-    }
+.table-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin-top: 2rem;
+}
 
-    .active, .accordion:hover {
-      background-color: #ccc;
-    }
+.table thead {
+  background: linear-gradient(90deg, #30aadd 0%, #36d1c4 100%);
+  color: #fff;
+}
 
-    .accordion:after {
-      content: '\002B';
-      color: #777;
-      font-weight: bold;
-      float: right;
-      margin-left: 5px;
-    }
+.table tbody tr {
+  transition: background 0.2s;
+}
+.table tbody tr:hover {
+  background: #e0f7fa;
+}
 
-    .active:after {
-      content: "\2212";
-    }
+.table th, .table td {
+  border: none;
+  padding: 1rem 0.5rem;
+}
 
-    .row-content{
-      border-bottom: 1px dashed black;
-    }
+.accordion {
+  background: #30aadd;
+  color: #fff;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(48,170,221,0.08);
+  transition: background 0.2s;
+}
+.accordion.active, .accordion:hover {
+  background: #36d1c4;
+}
 
-    .row-button {
-      margin: 5px auto;
-    }
+.panel {
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(48,170,221,0.08);
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
 
-    .row-button a {
-      font-size: 14pt;
-      margin: 0px;
-      width: 80%;
-    }
+.btn {
+  border-radius: 6px !important;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(48,170,221,0.08);
+}
 
-    .panel {
-      padding: 0 18px;
-      background-color: white;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.2s ease-out;
-    }
+@media (max-width:764px){
+  .table-container{display: none;}
+  .table-accordion{display: block; }
+  .accordion {
+    background: #30aadd;
+    color: #fff;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(48,170,221,0.08);
+    transition: background 0.2s;
   }
-
+  .accordion.active, .accordion:hover {
+    background: #36d1c4;
+  }
+  .panel {
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 8px rgba(48,170,221,0.08);
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  .row-content{
+    border-bottom: 1px dashed #30aadd;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .row-button {
+    margin: 5px auto;
+  }
+  .row-button a {
+    font-size: 1.1rem;
+    margin: 0px;
+    width: 80%;
+  }
+}
 {% endblock customize_style %}
 
 {% comment %} 在此建立Content {% endcomment %}
@@ -353,11 +287,7 @@ body{
             </div>
           </div>
           <div class="row row-button">
-            <div class="col justify-content-center">
-              <a href="{% url 'yfcase:yfratingscalePDF_View' yfcase.pk %}?inline=" class="btn btn-primary btn-sm">
-                評量表PDF
-              </a>      
-            </div>
+
             <div class="col-6 justify-content-center">
               <a href="{% url 'yfcase:yfcase_detail' yfcase.id %}" class="btn btn-secondary btn-sm" >
                 查看(編輯)明細

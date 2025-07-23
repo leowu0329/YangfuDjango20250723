@@ -1,31 +1,32 @@
-@font-face { 
-  font-family: 'Noto Sans TC'; 
-  src: url('../fonts/NotoSansTC-Medium.otf') format("opentype"), 
-  local('Noto Sans TC'); 
-} 
-
-@font-face { 
-  font-family: 'Roboto-Medium'; 
-  src: url('../fonts/Roboto-Medium.ttf') format("truetype"), 
-  local('Roboto-Medium'); 
-}
-
-@font-face { 
-  font-family: 'NotoSansTC-Regular'; 
-  src: url('../fonts/NotoSansTC-Regular.otf') format("truetype"), 
-  local('NotoSansTC-Regular'); 
-}
-
-@font-face { 
-  font-family: 'kaiu'; 
-  src: url('../fonts/kaiu.ttf') format("truetype"), 
-  local('kaiu'); 
-}
-
+html,
 body {
-  font-family: 'Roboto-Medium','Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', 'Roboto', Arial, 'Microsoft JhengHei',
+    '微軟正黑體', sans-serif;
+}
+
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('../fonts/NotoSansTC-Medium.otf') format('opentype'),
+    local('Noto Sans TC');
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('../fonts/Roboto-Medium.ttf') format('truetype'),
+    local('Roboto-Medium');
+}
+
+@font-face {
+  font-family: 'NotoSansTC-Regular';
+  src: url('../fonts/NotoSansTC-Regular.otf') format('truetype'),
+    local('NotoSansTC-Regular');
+}
+
+@font-face {
+  font-family: 'kaiu';
+  src: url('../fonts/kaiu.ttf') format('truetype'), local('kaiu');
 }
 
 h1 {
-	color:red;
+  color: red;
 }

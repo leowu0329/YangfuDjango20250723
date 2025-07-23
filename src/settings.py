@@ -35,7 +35,6 @@ INSTALLED_APPS = [
   'users',
   'yfcases',
   'import_export',
-  'wkhtmltopdf',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +86,6 @@ else:
 	DATABASES = {
 		'default': dj_database_url.parse(env('DATABASE_URL'))
 	}
-
 
 
 AUTH_PASSWORD_VALIDATORS = [

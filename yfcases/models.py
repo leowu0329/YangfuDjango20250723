@@ -544,7 +544,6 @@ class Build(models.Model):
     except ZeroDivisionError:
       return 0
 
-
 # ======= Auction =======
 class Auction(models.Model):
   yfcase=models.ForeignKey(Yfcase,related_name='auctions',on_delete=models.CASCADE)
@@ -926,52 +925,7 @@ class ObjectBuild(models.Model):
     except:
       newlist.append(0)
 
-# ======= 共有人資訊 =======
-class CoOwnerInfo(models.Model):
-  yfcase=models.ForeignKey(Yfcase,related_name='coownerinfos',on_delete=models.CASCADE)
-  coOwnerName = models.CharField(u'姓名',max_length=10,null=True,blank=True)
-  coOwnerIdentityCard=models.CharField(u'身分証號',max_length=50,null=True,blank=True)
-  coOwnerAddress = models.CharField(u'住址',max_length=50,null=True,blank=True)
-  coOwnerLandHPPersonnal=models.DecimalField(u'土地個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLandHPAll=models.DecimalField(u'土地所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerBuildHPPersonnal=models.DecimalField(u'建物個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerBuildHPAll=models.DecimalField(u'建物所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLifeOrDie = models.CharField(u'存/殁',max_length=4,null=True,blank=True)
   
-  
-  def __str__(self):
-    return self.coOwnerName
-
-# ======= 共有人之繼承人資訊 =======
-class CoOwnerHeir(models.Model):
-  coowner=models.ForeignKey(CoOwnerInfo,related_name='coownerheirs',on_delete=models.CASCADE)
-  coOwnerHeirName = models.CharField(u'姓名',max_length=10,null=True,blank=True)
-  coOwnerHeirIdentityCard=models.CharField(u'身分証號',max_length=50,null=True,blank=True)
-  coOwnerHeirAddress = models.CharField(u'住址',max_length=50,null=True,blank=True)
-  coOwnerHeirLandHPPersonnal=models.DecimalField(u'土地個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerHeirLandHPAll=models.DecimalField(u'土地所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerHeirBuildHPPersonnal=models.DecimalField(u'建物個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerHeirBuildHPAll=models.DecimalField(u'建物所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerHeirLifeOrDie = models.CharField(u'存/殁',max_length=4,null=True,blank=True)
-  
-  def __str__(self):
-    return self.coOwnerHeirName
-
-# ======= 承受訴訟人之繼承人資訊 =======
-class CoOwnerLitigation(models.Model):
-  coownerheir=models.ForeignKey(CoOwnerHeir,related_name='coownerlitigations',on_delete=models.CASCADE)
-  coOwnerLitigationName = models.CharField(u'姓名',max_length=10,null=True,blank=True)
-  coOwnerLitigationIdentityCard=models.CharField(u'身分証號',max_length=50,null=True,blank=True)
-  coOwnerLitigationAddress = models.CharField(u'住址',max_length=50,null=True,blank=True)
-  coOwnerLitigationLandHPPersonnal=models.DecimalField(u'土地個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLitigationLandHPAll=models.DecimalField(u'土地所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLitigationBuildHPPersonnal=models.DecimalField(u'建物個人持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLitigationBuildHPAll=models.DecimalField(u'建物所有持分',default=0,max_digits=8,decimal_places=0,null=True,blank=True)
-  coOwnerLitigationLifeOrDie = models.CharField(u'存/殁',max_length=4,null=True,blank=True)
-  
-  def __str__(self):
-    return self.coOwnerLitigationName
-    
 # ======= FinalDecision =======
 class FinalDecision(models.Model):
   yfcase=models.ForeignKey(Yfcase,related_name='finaldecisions',on_delete=models.CASCADE)

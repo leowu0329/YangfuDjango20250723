@@ -67,31 +67,5 @@ urlpatterns = [
   # 匯出資料
   path('export-excel/',export_yfcase,name='export'),
 
-  #PDF轉檔
-  path('deedtax/<int:pk>/edit/', DeedtaxUpdateView.as_view(), name='deedtax_edit'),
-  path('realestateregistration/<int:pk>/edit/', RealestateregistrationUpdateView.as_view(), name='realestateregistration_edit'),
-  path('complaint/<int:pk>/edit/', ComplaintUpdateView.as_view(), name='complaint_edit'),
-  path('coowner/<int:pk>/edit/', CoownertUpdateView.as_view(), name='coowner_edit'),
-  # 共有人
-  path('yfcase/<int:yfcase_id>/coownerinfo/create/',coownerinfo_create,name="coowner_create"),
-  path('yfcase/<int:yfcase_id>/coownerinfo/update/<int:id>/',coownerinfo_update,name="coowner_update" ),
-  path('yfcase/<int:yfcase_id>/oownerinfo/delete/<int:id>/',coownerinfo_delete,name="coowner_delete" ),
-  # 共有人之繼承人
-  path('coownerinfo/<int:coowner_id>/coownerheir/create/',coownerheir_create,name="coowner_heir_create" ),
-  path('coownerinfo/<int:coowner_id>/coownerheir/update/<int:id>/',coownerheir_update,name="coowner_heir_update" ),
-  path('coownerinfo/<int:coowner_id>/coownerheir/delete/<int:id>/',coownerheir_delete,name="coowner_heir_delete" ),
-
-  # 承受訴訟人之繼承人
-  path('coownerheir/<int:coowner_heir_id>/coownerlitigation/create/',coownerlitigation_create,name="coowner_litigation_create" ),
-  path('coownerheir/<int:coowner_heir_id>/coownerlitigation/update/<int:id>/',coownerlitigation_update,name="coowner_litigation_update" ),
-  path('coownerheir/<int:coowner_heir_id>/coownerlitigation/delete/<int:id>/',coownerlitigation_delete,name="coowner_litigation_delete" ),
- 
-  path('yfratingscalePDFView/<int:pk>/', yfratingscalePDFView.as_view(),name="yfratingscalePDF_View"), 
-  path('letter/<int:pk>/edit/', LetterUpdateView.as_view(), name='letter_edit'),
-  path('deedTaxPDFView/<int:pk>/', deedtaxPDFView.as_view(), name='deedtax_pdf_view'),
-  path('realestateregistrationPDFView/<int:pk>/', realestateregistrationPDFView.as_view(),name="realestateregistrationPDF_View"),
-  path('complaintPDFView/<int:pk>/', complaintPDFView.as_view(),name="complaintPDF_View"),
-  path('letterPDFView/<int:pk>/', letterPDFView.as_view(),name="letterPDF_View"),
-  path('coowonerPDFView/<int:pk>/', coownerPDFView.as_view(),name="coownerPDF_View"),
 
 ]

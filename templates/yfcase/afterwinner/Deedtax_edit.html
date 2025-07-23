@@ -1,0 +1,1015 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block style %}
+  <style type="text/css">
+    .help-block{
+      color:red;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<!-- 程式主題的部份 -->
+<form action="{% url 'yfcase:deedtax_edit' yfcase.id %}" method="post" id="editAfterWinnerModal" data-townships-url="{% url 'yfcase:ajax_load_townships' %}" >{% csrf_token %}
+  <!-- header -->
+  <h1>{{title}}</h1>
+  
+  <div class="col mb-3 text-center fs-2 bg-warning rounded-pill">
+    契稅申請書 - 案號：{{ yfcase.yfcaseCaseNumber }}
+  </div>
+  <!-- body -->
+  <div>
+    <div class="accordion" id="accordionExample">
+
+      <!-- 契稅申請書 - 基本資料 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            契稅申請書 - 基本資料
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body bg-light">
+            
+            <!--div.row>(div.col-md-3.mb-3)*4-->
+            
+            <!--基本資料欄位-->
+            <!--第一列-->
+            <div class="row">
+              <!--契稅委託人-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxClient.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxClient|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxClient.error }}
+                  </span>
+                </div>
+              </div>
+              <!--房屋稅籍編號-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group mb-3">
+                  <label>
+                    {{ form.yfcaseDeedtaxHouseTaxRegistrationNumber.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxHouseTaxRegistrationNumber|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxHouseTaxRegistrationNumber.error }}
+                  </span>
+                </div>
+              </div>
+              <!--契稅建立日期-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group mb-3">
+                  <label>{{ form.yfcaseDeedtaxEstablishmentDate.label }}</label>
+                  {{ form.yfcaseDeedtaxEstablishmentDate|add_class:"form-control border border-dark fieldcolor datepicker" }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxEstablishmentDate.error }}</span>
+                </div>
+              </div>
+              <!--契稅申報日期-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDeclarationDate.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDeclarationDate|add_class:"form-control border border-dark fieldcolor datepicker" }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDeclarationDate.error }}
+                  </span>
+                </div>
+              </div>
+              <!--契稅移轉價格-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxTransferPrice.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxTransferPrice|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxTransferPrice.error }}
+                  </span> 
+                </div>
+              </div>
+            </div>
+            
+            <!--第二列-->
+            <div class="row">
+              
+              <!--契稅領回方式-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxReclaimMethod.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxReclaimMethod|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxReclaimMethod.error }}
+                  </span>
+                </div>
+              </div>
+              <!--契稅結案簡訊-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxClosingNewsletter.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxClosingNewsletter|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxClosingNewsletter.error }}
+                  </span>
+                </div>
+              </div>
+              <!--契稅報附聯-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxReportAttached.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxReportAttached|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxReportAttached.error }}
+                  </span>
+                </div>
+              </div>
+              <!--契稅備註-->
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxRemarks.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxRemarks|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxRemarks.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- 契稅申請書 - 移轉情形 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            契稅申請書 - 移轉情形
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body bg-light">
+            
+            <!--移轉情形-層次1-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel1.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel1|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel1.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure1.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure1|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure1.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label for="{{ form.yfcaseDeedtaxBuildingTransferArea1.id_for_label }}">{{ form.yfcaseDeedtaxBuildingTransferArea1.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea1|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea1.error }}</span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-層次2-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel2.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel2|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel2.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure2.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure2|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure2.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxBuildingTransferArea2.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea2|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea2.error }}</span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-層次3-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel3.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel3|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel3.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure3.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure3|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure3.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxBuildingTransferArea3.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea3|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea3.error }}</span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-層次4-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel4.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel4|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel4.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure4.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure4|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure4.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxBuildingTransferArea4.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea4|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea4.error }}</span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-層次5-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel5.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel5|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel5.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure5.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure5|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure5.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxBuildingTransferArea5.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea5|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea5.error }}</span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-層次6-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel6.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferLevel6|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferLevel6.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure6.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferStructure6|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferStructure6.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxBuildingTransferArea6.label }}</label>
+                  {{ form.yfcaseDeedtaxBuildingTransferArea6|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxBuildingTransferArea6.error }}</span>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!--移轉情形-公設建號1-->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber1.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber1|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber1.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings1.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings1|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings1.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-公設建號2-->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber2.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber2|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber2.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings2.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings2|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings2.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-公設建號3-->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber3.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber3|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber3.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings3.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings3|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings3.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--移轉情形-公設建號4-->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber4.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber4|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicBuildingNumber4.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings4.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings4|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxBuildingTransferPublicHoldings4.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- 契稅申請書 - 義務人 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            契稅申請書 - 義務人：{{yfcase.yfcaseDebtor|default_if_none:""}}
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+          <div class="accordion-body bg-light">
+            
+            <!--身分証或統一編號、生日、市話、手機-->
+            <div class="row">
+              <!--身分証或統一編號-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorIdentityCard.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorIdentityCard|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorIdentityCard.error }}
+                  </span>
+                </div>
+              </div>
+              <!--生日-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorBirthday.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorBirthday|add_class:"form-control fieldcolor datepicker border border-dark" }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorBirthday.error }}
+                  </span>
+                </div>
+              </div>
+              <!--市話-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorLocalPhone.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorLocalPhone|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxDebtorLocalPhone.error }}</span>
+                </div>
+              </div>
+              <!--手機-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorMobilePhone.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorMobilePhone|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorMobilePhone.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="row">
+              <!--縣市-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorCity.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorCity|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorCity.error }}
+                  </span>
+                </div>
+              </div>
+              <!--鄉鎮區-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorTownship.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorTownship|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorTownship.error }}
+                  </span>
+                </div>
+              </div>
+              <!--村里-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorVillage.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorVillage|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorVillage.error }}
+                  </span>
+                </div>
+              </div>
+              <!--鄰-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorNeighbor.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorNeighbor|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorNeighbor.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <!--街路-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorStreet.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorStreet|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorStreet.error }}
+                  </span>
+                </div>
+              </div>
+              <!--段-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxDebtorSection.label }}</label>
+                  {{ form.yfcaseDeedtaxDebtorSection|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorSection.error }}
+                  </span>
+                </div>
+              </div>
+              <!--巷-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorLane.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorLane|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorLane.error }}
+                  </span>
+                </div>
+              </div>
+              <!--弄-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorAlley.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorAlley|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorAlley.error }}
+                  </span>
+                </div>
+              </div>
+              <!--號-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorNumber.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorNumber|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorNumber.error }}
+                  </span>
+                </div>
+              </div>
+              <!--樓(含之幾)-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorFloor.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorFloor|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorFloor.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <!--土地個人持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorLandHoldingPointPersonal.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorLandHoldingPointPersonal|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorLandHoldingPointPersonal.error }}
+                  </span>
+                </div>
+              </div>
+              <!--土地所有持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorLandHoldingPointAll.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorLandHoldingPointAll|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorLandHoldingPointAll.error }}
+                  </span>
+                </div>
+              </div>
+              <!--建物個人持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorBuildHoldingPointPersonal.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorBuildHoldingPointPersonal|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorBuildHoldingPointPersonal.error }}
+                  </span>
+                </div>
+              </div>
+              <!--建物所有持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxDebtorBuildHoldingPointAll.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxDebtorBuildHoldingPointAll|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxDebtorBuildHoldingPointAll.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 契稅申請書 - 權利人 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFourth">
+          <button class="accordion-button bg-info text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourth" aria-expanded="true" aria-controls="collapseFourth">
+            契稅申請書 - 
+            {% if yfcase.yfcaseCreditor %}
+              權利人：{{yfcase.yfcaseCreditor}}
+            {% else %}
+              權利人：{{yfcase.yfcaseCompany}}
+            {% endif %}
+          </button>
+        </h2>
+        <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth" data-bs-parent="#accordionExample">
+          <div class="accordion-body bg-light">
+            
+            <!--身分証或統一編號、生日、市話、手機-->
+            <div class="row">
+              <!--身分証或統一編號-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorIdentityCard.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorIdentityCard|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorIdentityCard.error }}
+                  </span>
+                </div>
+              </div>
+              <!--生日-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorBirthday.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorBirthday|add_class:"form-control fieldcolor datepicker border border-dark" }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorBirthday.error }}
+                  </span>
+                </div>
+              </div>
+              <!--市話-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorLocalPhone.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorLocalPhone|add_class:'form-control border border-dark' }}
+                  <span class="help-block">{{ form.yfcaseDeedtaxCreditorLocalPhone.error }}</span>
+                </div>
+              </div>
+              <!--手機-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorMobilePhone.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorMobilePhone|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorMobilePhone.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="row">
+              <!--縣市-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorCity.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorCity|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorCity.error }}
+                  </span>
+                </div>
+              </div>
+              <!--鄉鎮區-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorTownship.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorTownship|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorTownship.error }}
+                  </span>
+                </div>
+              </div>
+              <!--村里-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorVillage.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorVillage|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorVillage.error }}
+                  </span>
+                </div>
+              </div>
+              <!--鄰-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorNeighbor.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorNeighbor|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorNeighbor.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <!--街路-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorStreet.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorStreet|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorStreet.error }}
+                  </span>
+                </div>
+              </div>
+              <!--段-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>{{ form.yfcaseDeedtaxCreditorSection.label }}</label>
+                  {{ form.yfcaseDeedtaxCreditorSection|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorSection.error }}
+                  </span>
+                </div>
+              </div>
+              <!--巷-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorLane.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorLane|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorLane.error }}
+                  </span>
+                </div>
+              </div>
+              <!--弄-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorAlley.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorAlley|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorAlley.error }}
+                  </span>
+                </div>
+              </div>
+              <!--號-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorNumber.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorNumber|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorNumber.error }}
+                  </span>
+                </div>
+              </div>
+              <!--樓(含之幾)-->
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorFloor.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorFloor|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorFloor.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <!--土地個人持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorLandHoldingPointPersonal.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorLandHoldingPointPersonal|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorLandHoldingPointPersonal.error }}
+                  </span>
+                </div>
+              </div>
+              <!--土地所有持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorLandHoldingPointAll.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorLandHoldingPointAll|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorLandHoldingPointAll.error }}
+                  </span>
+                </div>
+              </div>
+              <!--建物個人持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorBuildHoldingPointPersonal.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorBuildHoldingPointPersonal|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorBuildHoldingPointPersonal.error }}
+                  </span>
+                </div>
+              </div>
+              <!--建物所有持分-->
+              <div class="col-md-3 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseDeedtaxCreditorBuildHoldingPointAll.label }}
+                  </label>
+                  {{ form.yfcaseDeedtaxCreditorBuildHoldingPointAll|add_class:'form-control border border-dark' }}
+                  <span class="help-block">
+                    {{ form.yfcaseDeedtaxCreditorBuildHoldingPointAll.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            {{ deedtax_clent_id|json_script:"deedtax_clent_id" }}
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- footer -->
+  <div class="modal-footer">
+    <a href="{% url 'yfcase:home' %}" class="btn btn-secondary col">返回</a>
+    <input class="btn btn-primary col-md-3" type="submit" value="建立"  />
+  </div>
+  
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  /* global $ */
+  $(document).ready(function(){
+    const deedtax_clent_id = JSON.parse(document.getElementById('deedtax_clent_id').textContent);
+    
+    document.getElementById("id_yfcaseDeedtaxClient").value = deedtax_clent_id;
+    // 此為欄位驗証的JS
+    $('#editAfterWinnerModal').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        yfcaseDeedtaxClient: {
+          validators: {
+            notEmpty: {
+              message: '此一欄位不得為空'
+            }
+          }
+        }
+      }
+    });
+
+  });
+
+// JS觸發事件來使yfcaseCity/yfcaseTownship這兩個欄位動作
+  $("#id_yfcaseCity").change(function () {
+    var url = $("#editAfterWinnerModal").attr("data-townships-url");
+    var cityId = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'city': cityId
+      },
+      success: function (data) {
+        $("#id_yfcaseTownship").html(data);
+      }
+    });
+  });
+
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+</script>
+{% endblock content %}

@@ -1,0 +1,77 @@
+<!-- 最終判定 -->
+{% load urlify %}
+{% load humanize %}
+
+<style>
+  .result__table { border: 3px solid black; }
+  .result__th { background-color: LightSalmon; border: 1px solid black; text-align: center;font-size: 1.2em;} 
+  .result__case__th { background-color: Gainsboro; border: 1px solid black; text-align: center;} 
+  .result__status__th { background-color: DarkSlateGray; color: white; border: 1px solid black; text-align: center;} 
+  .result__td { border: 1px dotted black; font-size: 1.2em;}
+
+  .result__seal { width:100px;border-radius:50%;border:3px solid red; }
+  .result__td__person { font-size: 16pt; height: 37px; line-height: 50px; color: red; }
+  .result__td__date { 
+    color: red;
+    font-size: 10pt;
+    height: 20px;
+    line-height: 16px;
+    font-weight: 700;
+    margin: 0px;
+    border-top: 3px solid red;
+    border-bottom: 3px solid red;
+  }
+  .result__td__workarea { font-size: 16pt; height: 37px; line-height: 30px; color: red; }
+  .result__checkbox { border: 3px solid black; width:30px; padding: 0px 5px; background-color: white; color: blue;}
+
+</style>
+
+<!-- 測試樣版1 -->
+<table class="result__table">
+  <tr>
+    {% if request.user == object.user or request.user.userRole == 1 %}
+      <th class="result__th" rowspan=2>操作</th>
+    {% endif %}
+    <th class="result__th" rowspan=2>應買止日</th>
+    <th class="result__th" rowspan=2>1.撤回</th>
+    <th class="result__th" colspan=2>
+      {% if object.results.first.actionResult == "第三人搶標" %}
+        <span class="result__checkbox">V</span> 
+      {% endif%}
+      2.第三人搶標
+    </th>
+    <th class="result__th" colspan=3>3.得標</th>
+    <th class="result__case__th" rowspan=2>標的編號</th>
+  </tr>
+  <tr>
+    <th class="result__th">搶標拍別</th>
+    <th class="result__th">搶標金額</th>
+    <th class="result__th">等待優購</th>
+    <th class="result__th">
+      {% if object.results.first.actionResult == "遭優購" %}
+        <span class="result__checkbox">V</span> 
+      {% endif%}
+      遭優購
+    </th>
+    <th class="result__th">無人優購</th>
+  </tr>
+  {% for result in object.results.all %}
+  <tr>
+    {% if request.user == object.user or request.user.userRole == 1 %}
+      <td class="result__td">
+        <a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:result_update' object.id result.id %}" role="button">修改</a>
+      </td>
+    {% endif %}
+    <td class="result__td">{{ result.stopBuyDate|default_if_none:"" }}</td>
+    <td class="result__td">{% if result.actionResult == "撤回" %} V {% endif %}</td>
+    <td class="result__td">{{ result.bidAuctionTime|default_if_none:"" }}</td>
+    <td class="result__td">{% if result.bidMoney > 0 %}{{ result.bidMoney|floatformat:0|thousandCut }}{% endif %}</td>
+    <td class="result__td">{% if result.actionResult == "等待優購" %} V {% endif %}</td>
+    <td class="result__td">{% if result.actionResult == "遭優購" %} V {% endif %}</td>
+    <td class="result__td">{% if result.actionResult == "無人優購" %} V {% endif %}</td>
+    <td class="result__td">{{ result.objectNumber|default_if_none:"" }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+ 

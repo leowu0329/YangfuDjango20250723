@@ -1,0 +1,91 @@
+<!-- 建物 -->
+{% load urlify %}
+
+<style>
+  .build__table { border: 3px solid black; }
+  .build__th { background-color: DeepSkyBlue; border: 1px solid black; text-align: center;font-size: 1.2em;} 
+  .build__td { border: 1px dotted black; font-size: 1.2em; }
+
+
+  .build__th__7 { width: 7%; }
+  .build__th__10 { width: 10%; }
+  .build__th__15 { width: 15%; }
+</style>
+
+<table class="build__table">
+  <tr>
+    {% if request.user == object.user or request.user.userRole == 1 %}
+      <th class="build__th build__th__10" rowspan="2">操作</th>
+    {% endif %}
+    <th class="build__th" rowspan="2">
+      建號
+    </th>
+    <th class="build__th build__th__15" rowspan="2">建坪(平方公尺)</th>
+    <th class="build__th build__th__10" rowspan="2">持分</th>  
+    <th class="build__th" colspan="2">建坪持分(平方公尺)</th>
+    <th class="build__th build__th__15" rowspan="2">
+      <div style="font-size:2vmin;color: red;background-color:Cornsilk;text-align:center;">
+       使用分區：{{ object.builds.first.buildUsePartition|default_if_none:"" }}
+      </div>
+      建物型/使用
+    </th>
+  </tr>
+  <tr>
+    <th class="build__th build__th__10">(原)</th>
+    <th class="build__th build__th__10">(計算後)</th>
+  </tr>
+  {% for build in object.builds.all %}
+    <tr>
+      {% if request.user == object.user or request.user.userRole == 1 %}
+        <td class="build__td">
+          <a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:build_update' object.id build.id %}" role="button">變更</a>
+          <a class="btn btn-danger btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:build_delete' object.id build.id %}" role="button">刪除</a>
+        </td>
+      {% endif %}
+      <td class="build__td text-left">
+        <div style="font-size:12pt;"> 
+          {% if build.buildNumber %}
+            {% if build.buildUrl != None %}
+              <a href="{{ build.buildUrl }}" target="_blank">
+                {{ object.yfcaseBigSection }}段{{ build.buildNumber }}
+              </a>
+            {% else %}
+              {{ object.yfcaseBigSection }}段{{ build.buildNumber }}
+            {% endif %}
+          {% endif %}
+        </div>
+      </td>
+
+      <td class="build__td">
+        {% if build.buildArea != 0 %}
+          {{ build.buildArea }}
+        {% endif %}
+      </td>
+      <td class="build__td">
+        {% if build.buildHoldingPointPersonal > 0 and build.buildHoldingPointAll > 0 %}
+          <div style="margin: 0px 10px;">{{ build.buildHoldingPointPersonal }}</div>
+          <div style="border-top: 1px solid black;width:auto; display:inline-block !important; display:inline;padding:0px 10px;">{{ build.buildHoldingPointAll }}</div>
+        {% endif %}
+      </td>
+      <td class="build__td">
+        {% if build.buildHoldingPointPersonal > 0 and build.buildHoldingPointAll > 0 %}
+          {{ build.get_build_holding_point_area|floatformat:"2" }}
+        {% endif %}
+      </td>
+      <td class="build__td">
+        {% if build.buildTypeUse == "公設" %}
+          {{ build.get_build_first_not_add_and_not_public_holding_point_area|floatformat:"2" }}
+        {% elif build.buildTypeUse == "增建-持分後坪數打對折" %}
+          {{ build.get_after_add_holding_point_area|floatformat:"2" }}
+        {% else %}
+          {{ build.get_build_holding_point_area|floatformat:"2" }}
+        {% endif %}
+      </td>
+      <td class="build__td">
+        {{ build.buildTypeUse|isWordCount:9|default_if_none:"" }}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+  

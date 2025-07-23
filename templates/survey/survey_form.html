@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+    .invalid-feedback{ color:red;font-weight: bolder;background-color: yellow;border: 1px solid red }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data' id="surveyCreateForm" novalidate >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 初勘日 && 會勘日 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">初勘日 && 會勘日</span>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">初勘日</span>
+        <div class="input-group">
+          {{ form.surveyFirstDay|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入初勘日" }}
+          <span class="help-block">{{ form.surveyFirstDay.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">會勘日</span>
+        <div class="input-group">
+          {{ form.surveySecondDay|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入會勘日" }}
+          <span class="help-block">{{ form.surveySecondDay.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 法拍公告(證物三) -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">法拍公告(證物三)</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyForeclosureAnnouncementLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入法拍公告(證物三)網址路徑" }}
+          <span class="help-block">{{ form.surveyForeclosureAnnouncementLink.error }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 998連結 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">998連結</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.survey988Link|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入998連結網址路徑" }}
+          <span class="help-block">{{ form.survey988Link.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 物件照片(證物四) -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">物件照片(證物四)</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyObjectPhotoLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入物件照片(證物四)網址路徑" }}
+          <span class="help-block">{{ form.surveyObjectPhotoLink.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 法拍記錄(證物七) -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">法拍記錄(證物七)</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyForeclosureRecordLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入法拍記錄(證物七)網址路徑" }}
+          <span class="help-block">{{ form.surveyForeclosureRecordLink.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 標的物(現場勘查) -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">標的物(現場勘查)</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyObjectViewLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入標的物(現場勘查)網址路徑" }}
+          <span class="help-block">{{ form.surveyObjectViewLink.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 收發文簿 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">收發文簿</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyPagesViewLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入收發文簿網址路徑" }}
+          <span class="help-block">{{ form.surveyPagesViewLink.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 流水帳 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">流水帳</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.surveyMoneytViewLink|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入流水帳網址路徑" }}
+          <span class="help-block">{{ form.surveyMoneytViewLink.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_survey_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+  function get_survey_yfcase() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/survey/create/",""); 
+    document.getElementById("id_yfcase").value = url;
+  }
+</script>
+{% endblock content %}

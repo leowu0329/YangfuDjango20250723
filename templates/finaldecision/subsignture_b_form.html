@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style>
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+  </style>
+{% endblock style %}
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data' >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <h4>是否同意此最終判定的結論<br>&emsp;&#10149;同意請按"核准"<br>&emsp;&#10149;不同意請按"返回"</h4>
+    <form method="POST" action="" enctype='multipart/form-data'>{% csrf_token %}
+      {{ form.subSigntrueB|attr:"type:hidden" }}
+      {{ form.subSigntrueDateB|attr:"type:hidden" }}
+      {{ form.subSigntrueWorkAreaB|attr:"type:hidden" }}
+
+      
+      {{ request.user.userFullName|json_script:"author_fullname" }}
+      {{ request.user.userWorkArea|json_script:"author_workarea"}}
+
+      <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <input type="submit" class="col btn btn-success form-control" value="核准" onclick="post_subsignture_b_edit_submit()">
+      </div>
+    </div>
+
+  </div>
+</form>
+
+  <!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+  <script>
+    function post_subsignture_b_edit_submit() {
+      const author_fullname = JSON.parse(document.getElementById('author_fullname').textContent);
+      const author_workarea = JSON.parse(document.getElementById('author_workarea').textContent);
+      var Today = new Date();
+      var addToday = Today.getFullYear()+ "-" + ("0" + (Today.getMonth() + 1)).slice(-2) + "-" + ("0" + Today.getDate()).slice(-2)
+      document.getElementById("id_subSigntrueDateB").value = addToday;
+      document.getElementById("id_subSigntrueB").value = author_fullname;
+      document.getElementById("id_subSigntrueWorkAreaB").value = author_workarea;
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+  </style>
+{% endblock style %}
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data' id="auctionCreateForm" novalidate >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 第一拍 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">第一拍</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">拍賣日</span>
+        <div class="input-group">
+          {{ form.auctionDateFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:第一拍拍賣日" }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">底價</span>
+        <div class="input-group">
+          {{ form.auctionFloorPriceFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">點閱</span>
+        <div class="input-group">
+          {{ form.auctionClickFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">監控</span>
+        <div class="input-group">
+          {{ form.auctionMonitorFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">成交件數</span>
+        <div class="input-group">
+          {{ form.auctionCaseCountFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">保証金</span>
+        <div class="input-group">
+          {{ form.auctionMarginFirst|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二拍 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">第二拍</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">拍賣日</span>
+        <div class="input-group">
+          {{ form.auctionDateSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:第二拍拍賣日" }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">底價</span>
+        <div class="input-group">
+          {{ form.auctionFloorPriceSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">點閱</span>
+        <div class="input-group">
+          {{ form.auctionClickSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">監控</span>
+        <div class="input-group">
+          {{ form.auctionMonitorSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">成交件數</span>
+        <div class="input-group">
+          {{ form.auctionCaseCountSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">保証金</span>
+        <div class="input-group">
+          {{ form.auctionMarginSecond|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 第三拍 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">第三拍</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">拍賣日</span>
+        <div class="input-group">
+          {{ form.auctionDateThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:第三拍拍賣日" }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">底價</span>
+        <div class="input-group">
+          {{ form.auctionFloorPriceThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">點閱</span>
+        <div class="input-group">
+          {{ form.auctionClickThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">監控</span>
+        <div class="input-group">
+          {{ form.auctionMonitorThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">成交件數</span>
+        <div class="input-group">
+          {{ form.auctionCaseCountThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">保証金</span>
+        <div class="input-group">
+          {{ form.auctionMarginThird|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 第四拍 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">第四拍</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">拍賣日</span>
+        <div class="input-group">
+          {{ form.auctionDateFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:第四拍拍賣日" }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">底價</span>
+        <div class="input-group">
+          {{ form.auctionFloorPriceFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">點閱</span>
+        <div class="input-group">
+          {{ form.auctionClickFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">監控</span>
+        <div class="input-group">
+          {{ form.auctionMonitorFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">成交件數</span>
+        <div class="input-group">
+          {{ form.auctionCaseCountFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">保証金</span>
+        <div class="input-group">
+          {{ form.auctionMarginFourth|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+        </div>
+      </div>
+    </div>
+
+     <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_auction_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+  function get_auction_yfcase() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/auction/create/",""); 
+    document.getElementById("id_yfcase").value = url;
+  }
+</script>
+{% endblock content %}

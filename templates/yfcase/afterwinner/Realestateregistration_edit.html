@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block style %}
+  <style type="text/css">
+    .help-block{
+      color:red;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+
+<div class="col-md p-2 bg-light">
+  <!-- 程式主題的部份 -->
+  <form action="{% url 'yfcase:realestateregistration_edit' yfcase.id %}" method="post" id="editRealestateregistrationModal" data-townships-url="{% url 'yfcase:ajax_load_townships' %}">{% csrf_token %}
+
+  <!-- header -->
+  <h1>{{title}}</h1>
+  
+  <div class="col mb-3 text-center fs-2 bg-warning rounded-pill">
+    不動產登記 - 案號：{{ yfcase.yfcaseCaseNumber }}
+  </div>
+  
+  <!--不動產登記代理人-->
+  <div class="col mb-3">
+    <div class="form-group">
+      <label>{{ form.yfcaseRealEstateRegistrationRegisteredAgent.label }}</label>
+      {{ form.yfcaseRealEstateRegistrationRegisteredAgent|add_class:'form-control border border-dark' }}
+      <span class="help-block">{{ form.yfcaseRealEstateRegistrationRegisteredAgent.error }}</span>
+    </div>
+  </div>
+  <!--原因發生日期-->
+  <div class="col mb-3">
+    <div class="form-group">
+      <label>{{ form.yfcaseRealEstateRegistrationDateOfCause.label }}</label>
+      {{ form.yfcaseRealEstateRegistrationDateOfCause|add_class:'form-control border border-dark fieldcolor datepicker' }}
+      <span class="help-block">{{ form.yfcaseRealEstateRegistrationDateOfCause.error }}</span>
+    </div>
+  </div>
+  <!--登記原因-->
+  <div class="col mb-3">
+    <div class="form-group">
+      <label>{{ form.yfcaseRealEstateRegistrationReasonForRegistration.label }}</label>
+      {{ form.yfcaseRealEstateRegistrationReasonForRegistration|add_class:'form-control border border-dark' }}
+      <span class="help-block">{{ form.yfcaseRealEstateRegistrationReasonForRegistration.error }}</span>
+    </div>
+  </div>
+  <!--登記備註-->
+  <div class="col mb-3">
+    <div class="form-group">
+      <label>{{ form.yfcaseRealEstateRegistrationRegistrationNote.label }}</label>
+      {{ form.yfcaseRealEstateRegistrationRegistrationNote|add_class:'form-control border border-dark' }}
+      <span class="help-block">{{ form.yfcaseRealEstateRegistrationRegistrationNote.error }}</span>
+    </div>
+  </div>
+  <!--跨所申請-->
+  <div class="col mb-3">
+    <div class="form-group">
+      {% render_field form.yfcaseApplyAcrossInstitutions|attr:"multiple:multiple"|attr:"data-plugin-multiselect" %} <span style="color:red;">跨所申請</span>
+      <span class="help-block">{{ form.yfcaseApplyAcrossInstitutions.error }}</span>
+    </div>
+  </div>
+  <!--受理機關-鄉鎮-->
+  <div class="col mb-3">
+    <div class="form-group">
+      <label>{{ form.yfcaseAcceptingAuthorityTownship.label }}</label>
+      {{ form.yfcaseAcceptingAuthorityTownship|add_class:'form-control border border-dark' }}
+      <span class="help-block">{{ form.yfcaseAcceptingAuthorityTownship.error }}</span>
+    </div>
+  </div>
+
+  {{ realestateregistration_user_id|json_script:"realestateregistration_clent_id" }}
+
+  <!-- footer -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <a href="{% url 'yfcase:home' %}" class="btn btn-secondary form-control">返回</a>
+    </div>
+    <div class="col-md-6 mb-3">
+      <input class="btn btn-primary form-control" type="submit" value="建立" />
+    </div>
+  </div>
+
+</form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  /* global $ */
+  $(document).ready(function(){
+    const realestateregistration_clent_id = JSON.parse(document.getElementById('realestateregistration_clent_id').textContent);
+    document.getElementById("id_yfcaseRealEstateRegistrationRegisteredAgent").value = realestateregistration_clent_id;
+    // 此為欄位驗証的JS
+    $('#editRealestateregistrationModal').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        yfcaseRealEstateRegistrationRegisteredAgent: {
+          validators: {
+            notEmpty: {
+              message: '此一欄位不得為空'
+            }
+          }
+        }  
+      }
+    });
+
+  });
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+</script>
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="content-language" content="en-gb">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Sign In | Simple singi-in page </title>
+  <meta property="og:title" content="Sign In" />
+  <meta property="og:locale" content="en_IN" />
+  <meta name="description" content="Simple sign in page" />
+  <meta property="og:description" content="Simple sign in page" />
+  <link rel="canonical" href="https://sign-in.github.com/" />
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css" />
+  <meta property="og:url" content="https://sign-in.github.com/" />
+  <meta property="og:site_name" content="Sign In" />
+  <script type="application/ld+json">
+  { "name": "Sign In", "description": "Simple sign in page", "@type": "WebSite", "url": "https://sign-in.github.com/", "headline": "Sign In" }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="main sign-in">
+      <div class="card">
+        <div class="logo">
+        </div>
+        <div class="card-head">
+          <h3 class="header">登錄</h3>
+        </div>
+        <div class="card-body">
+          <form id="frmLogin" action="#" method="POST">{% csrf_token %}
+            <div class="form-group">
+              <label class="form-label">帳號</label>
+              {% render_field form.username class+="form-control" id="txtUsername" type="text" placeholder="請輸入帳號" %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">密碼</label>
+              {% render_field form.password class+="form-control" id="txtPassword" type="password" placeholder="請輸入密碼" %}
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn" id="btnSignIn">登錄</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <span> <a href="{% url 'password_reset' %}"> 忘記密碼?</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

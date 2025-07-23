@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block style %}
+  <style type="text/css">
+    .help-block{
+      color:red;
+    }
+    .coowner__table { border-collapse: collapse;}
+    .coowner__table th { border: 1px solid black; background-color: yellow;padding: 0px;text-align: center;}
+    .coowner__table .coowner__td{ border: 1px solid black;text-align: center; }
+
+    .coownerheir__table  { border-collapse: collapse;width: 100%;}
+    .coownerheir__table th {border: 1px solid black; background-color: lightgreen;padding: 0px;text-align: center;font-size: 10pt;}
+    .coownerheir__table td { border: 1px solid black; font-size: 10pt;text-align: center;}
+    .coowner__table td.text-left { text-align: left; }
+
+    .btn__icon__create { background-color: MediumBlue; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__update { background-color: DarkGreen; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__delete { background-color: DarkRed; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__return { background-color: DimGrey; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<form action="{% url 'yfcase:coowner_edit' yfcase.id %}" method="post" id="Coowner_edit_form" data-townships-url="{% url 'yfcase:ajax_load_townships' %}">{% csrf_token %}
+  <!-- header -->
+  <h1>{{title}}</h1>
+      
+  <!-- 程式主題的部份 -->
+  <div>
+    <div class="accordion" id="accordionExample">
+      <!-- 共有人資訊 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            共有人分割--代理人
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body bg-light">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseCownerAgent.label }}
+                  </label>
+                  {{ form.yfcaseCownerAgent|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcaseCownerAgent.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                 <div class="form-group">
+                    <label>
+                      {{ form.yfcasecoOwnerLandHPPersonnal.label }}
+                    </label>
+                    {{ form.yfcasecoOwnerLandHPPersonnal|add_class:'form-control border border-dark fieldcolor' }}
+                    <span class="help-block">
+                      {{ form.yfcasecoOwnerLandHPPersonnal.error }}
+                    </span>
+                  </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcasecoOwnerLandHPAll.label }}
+                  </label>
+                  {{ form.yfcasecoOwnerLandHPAll|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcasecoOwnerLandHPAll.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcasecoOwnerBuildHPPersonnal.label }}
+                  </label>
+                  {{ form.yfcasecoOwnerBuildHPPersonnal|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcasecoOwnerBuildHPPersonnal.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcasecoOwnerBuildHPAll.label }}
+                  </label>
+                  {{ form.yfcasecoOwnerBuildHPAll|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcasecoOwnerBuildHPAll.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            {{ cowner_clent_id|json_script:"cowner_clent_id" }}
+            
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button bg-success collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <span class="text-white">共有人分割--共有人</span>
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md mb-3">
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseAllCoOwnerLandHPPersonnal.label }}
+                  </label>
+                  {{ form.yfcaseAllCoOwnerLandHPPersonnal|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcaseAllCoOwnerLandHPPersonnal.error }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md mb-3"> 
+                <div class="form-group">
+                  <label>
+                    {{ form.yfcaseAllCoOwnerLandHPAll.label }}
+                  </label>
+                  {{ form.yfcaseAllCoOwnerLandHPAll|add_class:'form-control border border-dark fieldcolor' }}
+                  <span class="help-block">
+                    {{ form.yfcaseAllCoOwnerLandHPAll.error }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!--共有人分割--共有人(按鍵)-->
+            <div>
+              <a href="{% url 'yfcase:coowner_create' object.id %}" class="btn__icon__create">新增共有人</a>
+              <a href="{% url 'yfcase:home' %}" class="btn__icon__return">返回</a>
+            </div>
+            
+            <!--共有人分割--共有人(表單)-->
+            {% if yfcase.coownerinfos.count > 0 %} 
+              <table class="coowner__table">
+                <tr>
+                  <th rowspan="2">操作</th>
+                  <th rowspan="2">姓名</th>
+                  <th rowspan="2">住址</th>
+                  <th colspan="2">地號持分</th>
+                  <th colspan="2">建號持分</th>
+                  <th rowspan="2">存/殁</th>
+                  <th rowspan="2">繼承人</th>
+                </tr>
+                <tr>
+                  <th>個人</th>
+                  <th>所有</th>
+                  <th>個人</th>
+                  <th>所有</th>
+                </tr>
+                {% for coownerinfo in yfcase.coownerinfos.all %}
+                  <tr>
+                    <td class="coowner__td">
+                      <a href="{% url 'yfcase:coowner_update' object.id coownerinfo.id %}" class="btn__icon__update">更新</a>
+                      <a href="{% url 'yfcase:coowner_delete' object.id coownerinfo.id %}" class="btn__icon__delete">刪除</a>
+                    </td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerName}}</td>
+                    <td class="coowner__td text-left">{{coownerinfo.coOwnerAddress|default_if_none:""}}</td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerLandHPPersonnal}}</td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerLandHPAll}}</td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerBuildHPPersonnal}}</td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerBuildHPAll}}</td>
+                    <td class="coowner__td">{{coownerinfo.coOwnerLifeOrDie|default_if_none:""}}</td>
+                    <td class="coowner__td">
+                      <a href="{% url 'yfcase:coowner_heir_create' coownerinfo.id %}" class="btn__icon__create">新增繼承人</a>
+                    </td>
+                  </tr>
+                  {% if coownerinfo.coownerheirs.count > 0 %}
+                    <tr>
+                      <td></td>
+                      <td colspan=8>
+                        <table class="coownerheir__table">
+                          <tr>
+                            <th rowspan="2">操作</th>
+                            <th rowspan="2">(順位)姓名</th>
+                            <th rowspan="2">住址</th>
+                            <th colspan="2">地號持分</th>
+                            <th colspan="2">建號持分</th>
+                            <th rowspan="2">存/殁</th>
+                            <th rowspan="2">訢訟人</th>
+                          </tr>
+                          <tr>
+                            <th>個人</th>
+                            <th>所有</th>
+                            <th>個人</th>
+                            <th>所有</th>
+                          </tr>
+                          {% for coownerheir in coownerinfo.coownerheirs.all %}
+                            <tr>
+                              <td>
+                                <a href="{% url 'yfcase:coowner_heir_update' coownerinfo.id coownerheir.id %}" class="btn__icon__update">更新</a>
+                                <a href="{% url 'yfcase:coowner_heir_delete' coownerinfo.id coownerheir.id %}" class="btn__icon__delete">刪除</a>
+                              </td>
+                              <td>
+                                ({{coownerheir.coOwnerHeirIdentityCard}})
+                                {{coownerheir.coOwnerHeirName}}<br>
+                                {{coownerheir.coOwnerHeirName}}即{{coownerinfo.coOwnerName}}之繼承人
+                              </td>
+                              <td class="text-left">{{coownerheir.coOwnerHeirAddress|default_if_none:""}}</td>
+                              <td>{{coownerheir.coOwnerHeirLandHPPersonnal}}</td>
+                              <td>{{coownerheir.coOwnerHeirLandHPAll}}</td>
+                              <td>{{coownerheir.coOwnerHeirBuildHPPersonnal}}</td>
+                              <td>{{coownerheir.coOwnerHeirBuildHPAll}}</td>
+                              <td>{{coownerheir.coOwnerHeirLifeOrDie|default_if_none:""}}</td>
+                              <td>
+                                <a href="{% url 'yfcase:coowner_litigation_create' coownerheir.id %}" class="btn__icon__create">新增訴訟人</a>
+                              </td>
+                            </tr>
+                            {% if coownerheir.coownerlitigations.count > 0 %}
+                              <tr>
+                                <td></td>
+                                <td colspan=8>
+                                  <table class="coownerheir__table">
+                                    <tr>
+                                      <th rowspan="2">操作</th>
+                                      <th rowspan="2">(順位)姓名</th>
+                                      <th rowspan="2">住址</th>
+                                      <th colspan="2">地號持分</th>
+                                      <th colspan="2">建號持分</th>
+                                      <th rowspan="2">存/殁</th>
+                                    </tr>
+                                    <tr>
+                                      <th>個人</th>
+                                      <th>所有</th>
+                                      <th>個人</th>
+                                      <th>所有</th>
+                                    </tr>
+                                    {% for coownerlitigation in coownerheir.coownerlitigations.all %}
+                                      <tr>
+                                        <td>
+                                          <a href="{% url 'yfcase:coowner_litigation_update' coownerheir.id coownerlitigation.id %}" class="btn__icon__update">更新</a>
+                                          <a href="{% url 'yfcase:coowner_litigation_delete' coownerheir.id coownerlitigation.id %}" class="btn__icon__delete">刪除</a> 
+                                        </td>
+                                        <td>
+                                          ({{coownerlitigation.coOwnerLitigationIdentityCard}})
+                                          {{coownerlitigation.coOwnerLitigationName}}<br>
+                                          {{coownerlitigation.coOwnerLitigationName}}即{{coownerheir.coOwnerHeirName}}之承受訴訟人即{{coownerinfo.coOwnerName}}之繼承人
+                                          
+                                        </td>
+                                        <td class="text-left">{{coownerlitigation.coOwnerLitigationAddress|default_if_none:""}}</td>
+                                        <td>{{coownerlitigation.coOwnerLitigationLandHPPersonnal}}</td>
+                                        <td>{{coownerlitigation.coOwnerLitigationLandHPAll}}</td>
+                                        <td>{{coownerlitigation.coOwnerLitigationBuildHPPersonnal}}</td>
+                                        <td>{{coownerlitigation.coOwnerLitigationBuildHPAll}}</td>
+                                        <td>{{coownerlitigation.coOwnerLitigationLifeOrDie|default_if_none:""}}</td>
+                                       
+                                      </tr>
+                                    {% endfor %}
+                                  </table>
+                                </td>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
+                        </table>
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-3">
+      <div class="col-md-6 mt-3">
+        <a href="{% url 'yfcase:home' %}" class="btn btn-secondary form-control" >返回</a>
+      </div>
+      <div class="col-md-6 mt-3">
+        <input class="btn btn-primary form-control" type="submit" value="建立" />
+      </div>
+    </div>
+    
+  </div>
+
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  /* global $ */
+  $(document).ready(function(){
+    const cowner_clent_id = JSON.parse(document.getElementById('cowner_clent_id').textContent);
+    document.getElementById("id_yfcaseCownerAgent").value = cowner_clent_id; 
+    // 此為欄位驗証的JS
+    $('#Coowner_edit_form').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+      }
+    });
+
+  });
+
+
+</script>
+{% endblock content %}

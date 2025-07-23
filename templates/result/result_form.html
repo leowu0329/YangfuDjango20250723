@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style>
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+    #myBidAuctionTime { display: none; }
+    #myBidMoney { display: none; }
+    #myObjectNumber { display: none; }
+  </style>
+{% endblock style %}
+
+{% block content %}
+
+
+
+
+<!-- 如果有要用到dateValidationCheck()函數的話，在後面加上onsubmit="return dateValidationCheck(this.stopBuyDate.value);" -->
+<form action="" method="post" onsubmit="return dateValidationCheck(this.stopBuyDate.value);">{% csrf_token %}
+ 
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 應買止日 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">應買止日</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.stopBuyDate|add_class:'form-control border border-dark border-2 fw-bold rounded-end datepicker'|attr:"autocomplete:off"|attr:"placeholder:請輸入應買止日" }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 執行結果 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">執行結果</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.actionResult|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入執行結果"|attr:"onchange: myFunction()" }}
+          <span class="help-block">{{ form.actionResult.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 搶標拍別 -->
+    <div class="row mt-3" id="myBidAuctionTime">
+      <span class="text-dark fs-4 fw-bold">搶標拍別</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.bidAuctionTime|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入搶標拍別" }}
+          <span class="help-block">{{ form.bidAuctionTime.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 搶標金額 -->
+    <div class="row mt-3" id="myBidMoney">
+      <span class="text-dark fs-4 fw-bold">搶標金額</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.bidMoney|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入搶標金額" }}
+          <span class="help-block">{{ form.bidMoney.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 標的編號 -->
+    <div class="row mt-3" id="myObjectNumber">
+      <span class="text-dark fs-4 fw-bold">標的編號</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.objectNumber|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入標的編號" }}
+          <span class="help-block">{{ form.objectNumber.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新" onclick="get_result_update()">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_result_create()">
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(function() {
+    // 應買止日日期格式
+    var userLang = navigator.language || navigator.userLanguage;
+    var options = $.extend({},
+      $.datepicker.regional["zh-TW"], {
+        dayNames:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
+        dayNamesMin:["日","一","二","三","四","五","六"],
+        monthNames:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+        monthNamesShort:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+        prevText:"上月",
+        nextText:"次月",
+        weekHeader:"週",
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        highlightWeek: true
+      }
+    );
+    $("#id_stopBuyDate").datepicker(options);
+
+    // 第三人搶標及無人優購
+    var bidAuctionTime = document.getElementById("myBidAuctionTime");
+    var bidMoney = document.getElementById("myBidMoney");
+    var objectNumber = document.getElementById("myObjectNumber");
+    
+    var y = document.getElementById("id_actionResult").value;
+
+    if ( y === "第三人搶標" ) {
+      bidAuctionTime.style.display = "block";
+      bidMoney.style.display = "block";
+      objectNumber.style.display = "none";
+    } else if ( y === "無人優購" ) {
+      bidAuctionTime.style.display = "none";
+      bidMoney.style.display = "none";
+      objectNumber.style.display = "block";
+    } else {
+      bidAuctionTime.style.display = "none";
+      bidMoney.style.display = "none";
+      objectNumber.style.display = "none";
+    }
+    $( ".datepicker" ).datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+  function get_result_create() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/result/create/",""); 
+    document.getElementById("id_yfcase").value = url;
+  }
+  
+  function get_result_update() {
+    // 判斷第三人搶標/無人優購是否欄位清空
+    var actionResult = document.getElementById("id_actionResult").value
+    
+    if ( actionResult === "第三人搶標" ) {
+      document.getElementById("id_objectNumber").value = "";
+    } else if ( actionResult === "無人優購" ) {
+      document.getElementById("id_bidAuctionTime").value = "";
+      document.getElementById("id_bidMoney").value = 0;
+    } else {
+      document.getElementById("id_objectNumber").value = "";
+      document.getElementById("id_bidAuctionTime").value = "";
+      document.getElementById("id_bidMoney").value = 0;
+    }
+  }
+  
+  
+  function myFunction() {
+    var bidAuctionTime = document.getElementById("myBidAuctionTime");
+    var bidMoney = document.getElementById("myBidMoney");
+    var objectNumber = document.getElementById("myObjectNumber");
+    
+    var y = document.getElementById("id_actionResult").value
+    
+    if ( y === "第三人搶標" ) {
+      bidAuctionTime.style.display = "block";
+      bidMoney.style.display = "block";
+      objectNumber.style.display = "none";
+    } else if ( y === "無人優購" ) {
+      bidAuctionTime.style.display = "none";
+      bidMoney.style.display = "none";
+      objectNumber.style.display = "block";
+    } else {
+      bidAuctionTime.style.display = "none";
+      bidMoney.style.display = "none";
+      objectNumber.style.display = "none";
+    }
+  }
+
+  function dateValidationCheck(theDate){
+    var reg = /^\d{4}-(02-(0[1-9]|[12][0-9])|(0[469]|11)-(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))$/; 
+    var result=true;
+    if(!reg.test(theDate) && theDate != ""){
+      result = false; 
+    }
+    if (!result) {
+      alert("請輸入正確的日期格式(YYYY-MM-DD)或是有效日期");
+    }
+    return result;
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style>
+    .help-block {
+      color: red;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="col">
+  <h1>{{ title }}</h1>
+  <form method="POST" action="" enctype='multipart/form-data'>{% csrf_token %}
+    {{ form.yfcase|attr:"type:hidden" }}
+    {{ form.finalDecisionRegionalHeadFirst|attr:"type:hidden" }}
+    {{ form.finalDecisionDeterminationFirst|attr:"type:hidden" }}
+    {{ form.finalDecisionRegionalHeadWorkAreaFirst|attr:"type:hidden" }}
+        
+    <div class="form-row">
+      <div class="form-group col">
+        <label>{{ form.finalDecisionRemarkFirst.label }}</label>
+        {{ form.finalDecisionRemarkFirst|add_class:"form-control fieldcolor pt-0" }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col">
+        <label>{{ form.finalDecisionRegionalHeadDateFirst.label }}</label>
+        {{ form.finalDecisionRegionalHeadDateFirst|add_class:"form-control fieldcolor datepicker pt-0" }}
+        <small style="color:blue;">*若此欄位為空值，則日期以當天的日期為主</small>
+      </div>
+    </div>
+    {{ instance_yfcase.user.userFullName}}
+    {{ instance_yfcase.user.userFullName|json_script:"author_fullname" }} 
+    {{ object.user.userWorkArea|json_script:"author_workarea" }} 
+
+    <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary" >返回</a>
+    {% if instance.id %}
+      <input type="submit" class="btn btn-secondary" value="更新">
+    {% else %}
+      <input type="submit" class="btn btn-secondary" value="新增" onclick="get_regional_first_yfcase()">
+    {% endif %}
+  </form>
+</div>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 
+<script>
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+    
+  function get_regional_first_yfcase() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/regionalheadfirst/create/","");
+    var Today = new Date();
+    var addToday = Today.getFullYear()+ "-" + ("0" + (Today.getMonth() + 1)).slice(-2) + "-" + ("0" + Today.getDate()).slice(-2)
+    const author_fullname = JSON.parse(document.getElementById('author_fullname').textContent);
+    const author_workarea = JSON.parse(document.getElementById('author_workarea').textContent);
+    alert(Today)
+    document.getElementById("id_finalDecisionRegionalHeadFirst").value = author_fullname;
+     // alert(author_fullname);
+    if (document.getElementById("id_finalDecisionRegionalHeadDateFirst").value == "") {
+      document.getElementById("id_finalDecisionRegionalHeadDateFirst").value = addToday;
+    } else {
+      document.getElementById("id_finalDecisionRegionalHeadDateFirst").value = document.getElementById("id_finalDecisionRegionalHeadDateFirst").value;
+    }
+    // document.getElementById("id_regionalHead").value = "leowu";
+    document.getElementById("id_yfcase").value = url;
+    document.getElementById("id_finalDecisionDeterminationFirst").value = '一拍進場';
+    document.getElementById("id_finalDecisionRegionalHeadWorkAreaFirst").value = author_workarea;
+  }
+
+</script>
+{% endblock  %}
+<!-- 'yfcase','finalDecisionRegionalHeadFirst','finalDecisionDeterminationFirst','finalDecisionRegionalHeadDateFirst','finalDecisionRemarkFirst' -->

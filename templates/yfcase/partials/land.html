@@ -1,0 +1,65 @@
+<!-- 土地 -->
+{% load urlify %}
+
+<style>
+  .land__table { border: 3px solid black;}
+  .land__th { background-color: Aquamarine; border: 1px solid black; text-align: center;font-size: 1.2em;} 
+  .land__td { border: 1px dotted black;font-size: 1.2em; }
+  .link__button { font-size:12pt; }
+  .land__th__7 { width: 7%; }
+  .land__th__10 { width: 10%; }
+  .land__th__15 { width: 15%; }
+</style>
+
+
+<table class="land__table">
+  <tr>
+    {% if request.user == object.user or request.user.userRole == 1 %}
+      <th class="land__th land__th__10">操作</th>
+    {% endif %}
+    <th class="land__th">地號</th>
+    <th class="land__th">地坪(平方公尺)</th>
+    <th class="land__th">持分</th>
+    <th class="land__th">地坪持分(平方公尺)</th>
+  </tr>
+  {% for land in object.lands.all %}
+    <tr>
+      {% if request.user == object.user or request.user.userRole == 1 %}
+        <td class="land__td">
+          <a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:land_update' object.id land.id %}" role="button">變更</a>
+          <a class="btn btn-danger btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:land_delete' object.id land.id %}" role="button">刪除</a>
+        </td>
+      {% endif %}
+      <td class="land__td text-left">
+        <div style="font-size:12pt;">
+          {% if land.landNumber %}
+            {% if land.landUrl != None %}
+              <a href="{{ land.landUrl }}" target="_blank">
+                {{ object.yfcaseBigSection }}段{{ land.landNumber }}
+              </a>
+            {% else %}
+              {{ object.yfcaseBigSection }}段{{ land.landNumber }}
+            {% endif %}
+          {% endif %}
+        </div>
+      </td>
+      <td class="land__td">
+        {% if land.landArea != 0 %}
+          {{ land.landArea }}
+        {% endif %}
+      </td>
+      <td class="land__td">
+        {% if land.landHoldingPointPersonal > 0 and land.landHoldingPointAll > 0 %}
+          <div style="margin: 0px 10px;">{{ land.landHoldingPointPersonal }}</div>
+          <div style="border-top: 1px solid black;width:auto; display:inline-block !important; display:inline;padding:0px 10px;">{{ land.landHoldingPointAll }}</div>
+        {% endif %}
+      </td>
+      <td class="land__td">
+        {% if land.landHoldingPointPersonal > 0 and land.landHoldingPointAll > 0 %}
+          {{ land.get_land_holding_point_area|floatformat:"2" }}
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  
+</table>

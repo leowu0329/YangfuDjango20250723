@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+    .invalid-feedback{ color:red;font-weight: bolder;background-color: yellow;border: 1px solid red }
+  </style>
+{% endblock style %}
+
+{% block content %}
+
+<form method="POST" action="" enctype='multipart/form-data' id="landCreateForm" class="was-validated" novalidate >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 地號 && 謄本 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">地號</span>
+      <div class="col-md-5">
+        <span class="text-white bg-dark px-2">地號(只輸入阿拉伯數字)</span>
+        <div class="input-group">
+          {{ form.landNumber|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入地號" }}
+          <span class="help-block">{{ form.landNumber.error }}</span>
+          <div class="invalid-feedback">
+            必填，請輸入地號
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <span class="text-white bg-dark px-2">謄本</span>
+        <div class="input-group">
+          {{ form.landUrl|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入謄本連結路徑" }}
+          <span class="help-block">{{ form.landUrl.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 地坪 && 個人持分 && 所有持分 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">地坪</span>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">地坪 (單位：平方公尺)</span>
+        <div class="input-group">
+          {{ form.landArea|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入地坪坪數" }}
+          <span class="help-block">{{ form.landArea.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">個人持分</span>
+        <div class="input-group">
+          {{ form.landHoldingPointPersonal|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入個人持分" }}
+          <span class="help-block">{{ form.landHoldingPointPersonal.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">所有持分</span>
+        <div class="input-group">
+          {{ form.landHoldingPointAll|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入所有持分" }}
+          <span class="help-block">{{ form.landHoldingPointAll.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 備註 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">備註</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.landRemark|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入該筆地號備註說明" }}
+          <span class="help-block">{{ form.landRemark.error }}</span>
+        </div>
+        <span class="text-primary">(此欄會出現在不動產登記的地號備註欄)</span>
+      </div>
+    </div>
+
+    {{ instance_yfcase.yfcaseUpdated|json_script:"yfcase_updated" }} 
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_land_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+<script>
+  $(document).ready(function(){
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+
+  });
+ 
+  function get_land_yfcase() {
+    // var url = (window.location.pathname).replace("/yfcase/land/create/","").replace("/",""); 
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/land/create/",""); 
+    var date = new Date();
+    var today_format = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    const yfcase_updated = JSON.parse(document.getElementById('yfcase_updated').textContent);
+    // /yfcase/3/land/create/
+    document.getElementById("id_yfcase").value = url;
+    yfcase_updated.value=today_format;
+  }
+
+</script>
+{% endblock  %}

@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+  </style>
+{% endblock style %}
+
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data'>{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.objectBuildScorerC|attr:"type:hidden" }}
+    {{ form.objectBuildScorRateC|attr:"type:hidden" }}
+    {{ form.objectBuildScorReasonC|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 加成係數1 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數1</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueC1|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemC1|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"value:屋況" }}
+        </div>
+      </div>
+    </div>
+    <!-- 加成係數2 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數2</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueC2|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemC2|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"value:臨路面寬" }}
+        </div>
+      </div>
+    </div>
+    <!-- 加成係數3 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數3</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueC3|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemC3|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"value:聯外道路" }}
+        </div>
+      </div>
+    </div>
+    <!-- 加成係數4 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數4</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueC4|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemC4|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+    </div>
+    <!-- 加成係數5 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數5</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueC5|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemC5|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+    </div>
+    <!-- 加成係數(其他) -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">加成係數(其他)</span>
+      <div class="col-md-2">
+        <span class="text-white bg-dark px-2">加成</span>
+        <div class="input-group">
+          {{ form.plusValueOtherC|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+      <div class="col-md-10">
+        <span class="text-white bg-dark px-2">項目</span>
+        <div class="input-group">
+          {{ form.plusItemOtherC|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off" }}
+        </div>
+      </div>
+    </div>
+
+    {{ request.user.userFullName|json_script:"author_fullname" }}
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新" onclick="post_score_c_edit_submit()">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="post_score_c_edit_submit()">
+        {% endif %}
+      </div>
+    </div>
+    
+  </div>
+</form>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+<script>
+  function post_score_c_edit_submit() {
+    const author_fullname = JSON.parse(document.getElementById('author_fullname').textContent);
+    document.getElementById("id_objectBuildScorerC").value = author_fullname;
+    console.log(author_fullname)
+  }
+</script>
+{% endblock %}

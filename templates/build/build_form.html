@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+    .invalid-feedback{ color:red;font-weight: bolder;background-color: yellow;border: 1px solid red }
+  </style>
+{% endblock style %}
+
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data' id="buildCreateForm" class="was-validated" novalidate >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 建號 && 謄本 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">建號</span>
+      <div class="col-md-5">
+        <span class="text-white bg-dark px-2">建號(只輸入阿拉伯數字)</span>
+        <div class="input-group">
+          {{ form.buildNumber|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"autocomplete:off"|attr:"placeholder:請輸入建號" }}
+          <span class="help-block">{{ form.buildNumber.error }}</span>
+          <div class="invalid-feedback">
+            必填，請輸入建號
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <span class="text-white bg-dark px-2">謄本</span>
+        <div class="input-group">
+          {{ form.buildUrl|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入謄本連結路徑" }}
+          <span class="help-block">{{ form.buildUrl.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 建坪 && 個人持分 && 所有持分 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">建坪</span>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">建坪 (單位：平方公尺)</span>
+        <div class="input-group">
+          {{ form.buildArea|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入建坪坪數" }}
+          <span class="help-block">{{ form.buildArea.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">個人持分</span>
+        <div class="input-group">
+          {{ form.buildHoldingPointPersonal|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入個人持分" }}
+          <span class="help-block">{{ form.buildHoldingPointPersonal.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <span class="text-white bg-dark px-2">所有持分</span>
+        <div class="input-group">
+          {{ form.buildHoldingPointAll|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入所有持分" }}
+          <span class="help-block">{{ form.buildHoldingPointAll.error }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 建物型 && 使用分區 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">其他資訊</span>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">建物型</span>
+        <div class="input-group">
+          {{ form.buildTypeUse|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入建物類型" }}
+          <span class="help-block">{{ form.buildTypeUse.error }}</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">使用分區</span>
+        <div class="input-group">
+          {{ form.buildUsePartition|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入用途說明" }}
+          <span class="help-block">{{ form.buildUsePartition.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 備註 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">備註</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.buildRemark|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入該筆建號備註說明" }}
+          <span class="help-block">{{ form.buildRemark.error }}</span>
+        </div>
+        <span class="text-primary">(此欄會出現在不動產登記的建號備註欄)</span>
+      </div>
+    </div>
+
+    <!-- 附屬建物面積 && 附屬建物用途 -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">附屬建物</span>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">面積 (單位：平方公尺)</span>
+        <div class="input-group">
+          {{ form.buildAncillaryBuildingArea|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入建物類型" }}
+          <span class="help-block">{{ form.buildAncillaryBuildingArea.error }}</span>
+        </div>
+        <span class="text-primary">(此欄會出現在不動產登記的建號附屬建物面積欄)</span>
+      </div>
+      <div class="col-md-6">
+        <span class="text-white bg-dark px-2">用途</span>
+        <div class="input-group">
+          {{ form.buildAncillaryBuildingUseBy|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入使用分區" }}
+          <span class="help-block">{{ form.buildAncillaryBuildingUseBy.error }}</span>
+        </div>
+        <span class="text-primary">(此欄會出現在不動產登記的建號附屬建物用途欄)</span>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_build_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+
+  });
+
+  function get_build_yfcase() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/build/create/",""); 
+    document.getElementById("id_yfcase").value = url;
+  }
+</script>
+{% endblock content %}

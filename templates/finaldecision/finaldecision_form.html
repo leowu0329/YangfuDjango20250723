@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+    .invalid-feedback{ color:red;font-weight: bolder;background-color: yellow;border: 1px solid red }
+  </style>
+{% endblock style %}
+
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data' novalidate >{% csrf_token %}
+  {% if instance.id %}
+     <div class="container-sm border border-success border-3 rounded mt-3 bg-light">
+  {% else %}
+     <div class="container-sm border border-primary border-3 rounded mt-3 bg-light">
+  {% endif %}
+    {{ form.yfcase|attr:"type:hidden" }}
+    {{ form.regionalHead|attr:"type:hidden" }}
+    {{ form.regionalHeadWorkArea|attr:"type:hidden" }}
+    {{ form.regionalHeadAddDate|attr:"type:hidden" }}
+
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        {% if instance.id %}
+           <div class="bg-success fs-3 fw-bold text-white text-center p-2 rounded">
+        {% else %}
+           <div class="bg-primary fs-3 fw-bold text-white text-center p-2 rounded">
+        {% endif %}
+          {{ title }}
+        </div>
+      </div>
+    </div>
+    
+    <!-- 最終判定  -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">最終判定</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.finalDecision|add_class:'form-control border border-dark border-2 fw-bold rounded-end' }}
+          <span class="help-block">{{ form.finalDecision.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 備註  -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">備註</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.finalDecisionRemark|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入判定備註" }}
+          <span class="help-block">{{ form.finalDecisionRemark.error }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 簽核日期  -->
+    <div class="row mt-3">
+      <span class="text-dark fs-4 fw-bold">簽核日期</span>
+      <div class="col-md-12">
+        <div class="input-group my-1">
+          {{ form.regionalHeadDate|add_class:'form-control border border-dark border-2 fw-bold rounded-end'|attr:"placeholder:請輸入簽核日期" }}
+          <span class="help-block">{{ form.regionalHeadDate.error }}</span>
+        </div>
+        <span class="text-primary">*若此欄位為空值，則日期以當天的日期為主</span>
+      </div>
+    </div>
+
+    {{ instance_yfcase.user.userFullName|json_script:"author_fullname" }} 
+    {{ instance_yfcase.user.userWorkArea|json_script:"author_workarea"}} 
+
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        {% if instance.id %}
+          <input type="submit" class="col btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="col btn btn-primary form-control" value="新增" onclick="get_regional_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 
+<script>
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+    
+  function get_regional_yfcase() {
+    var url = (window.location.pathname).replace("/yfcase/","").replace("/finaldecision/create/","");
+    var Today = new Date();
+    var addToday = Today.getFullYear()+ "-" + ("0" + (Today.getMonth() + 1)).slice(-2) + "-" + ("0" + Today.getDate()).slice(-2)
+    const author_fullname = JSON.parse(document.getElementById('author_fullname').textContent);
+    const author_workarea = JSON.parse(document.getElementById('author_workarea').textContent);
+
+    document.getElementById("id_regionalHead").value = author_fullname;
+    document.getElementById("id_regionalHeadWorkArea").value = author_workarea;
+    if (document.getElementById("id_regionalHeadDate").value == "") {
+      document.getElementById("id_regionalHeadDate").value = addToday;
+    } else {
+      document.getElementById("id_regionalHeadDate").value = document.getElementById("id_regionalHeadDate").value;
+    }
+    // document.getElementById("id_regionalHead").value = "leowu";
+    document.getElementById("id_yfcase").value = url;
+  }
+
+</script>
+{% endblock  %}

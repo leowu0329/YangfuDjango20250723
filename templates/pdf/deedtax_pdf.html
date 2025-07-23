@@ -1,0 +1,560 @@
+{% load static %}
+{% load urlify %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Roboto&display=swap" rel="stylesheet">
+  <title>契稅申請書</title>
+  <style type="text/css">
+    body {
+      font-family: 'Noto Sans TC', 'Roboto',sans-serif;
+      font-size:11pt;
+    }
+    
+    .deedtaxHeader{
+      border-collapse:collapse;
+      border:1px solid black;
+      width:100%;
+    }
+    
+    .deedtax123,
+    .deedtax45,
+    .deedtax6,
+    .deedtax7,
+    .deedtax8910,
+    .deedtax11,
+    .deedtax12,
+    .deedtax13To19,
+    .deedtaxFooter,
+    .deedtaxNotWrite {
+      border-collapse:collapse;
+      border:1px solid black;
+      width:100%;
+      border-top:hidden;
+    }
+    
+
+    
+    .deedtaxHeader th,
+    .deedtax123 th,
+    .deedtax45 th,
+    .deedtax6 th,
+    .deedtax7 th,
+    .deedtax8910 th,
+    .deedtax11 th,
+    .deedtax12 th,
+    .deedtax13To19 th,
+    .deedtaxFooter th,
+    .deedtaxNotWrite th {
+      border-collapse:collapse;
+      border:1px solid black;
+      margin:0px;
+      padding-left:5px;
+      text-align:left;
+      line-height: 18px;　
+    }
+
+    .deedtaxHeader tr {
+      height:40px;
+    }
+    
+    .deedtaxHeader td {
+      font-size: 10pt;
+      border-collapse:collapse;
+      border:1px solid black;
+      padding:0px;
+      margin:0px;
+      text-align:center;
+      line-height: 15px;
+    }
+
+    .deedtax123 td,
+    .deedtax45 td,
+    .deedtax6 td,
+    .deedtax7 td,
+    .deedtax8910 td,
+    .deedtax11 td,
+    .deedtax12 td,
+    .deedtax13To19 td,
+    .deedtaxFooter td,
+    .deedtaxNotWrite td {
+      border-collapse:collapse;
+      border:1px solid black;
+      padding:0px 2px;
+      margin:0px;
+      
+      height:18px;
+      text-align:center;
+      line-height: 18px;　　
+    }
+    
+    .deedtaxNotWrite td{padding:2px 5px; }
+    .bluefont{color:blue; font-weight:bolder; }
+    .item__space {padding-left: 19px; }
+    .item__space__2 {padding-left:28px; }
+    .text-left {text-align: left; }
+  </style>
+</head>
+<body>
+  <!-- 前導資料 -->
+  <table class="deedtaxHeader">
+    {% if yfcase.results.first.objectNumber %}
+      <tr>
+        <td colspan="5" class="bluefont" style="border-top:hidden;border-left:hidden;border-right:hidden;padding-left:800px;">
+          {{yfcase.results.first.objectNumber|default_if_none:"" }}
+        </td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td rowspan="2" style="width:62.5%;border-top:hidden;border-left:hidden;font-size:30pt;padding-left:300px;">契稅申報書</td>
+      <td rowspan="2" style="width:2.5%;border-top:1px solid black;">申報人免填</td>
+      <td rowspan="2" style="width:4%;border-top:1px solid black;">(總收收件文號)</td>
+      <td style="width:3%;border-top:1px solid black;">日期</td>
+      <td style="font-size:14pt;border-top:1px solid black;">年　　月　　日</td>
+    </tr>
+    <tr>
+      <td>字號</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <!-- (1)房屋稅籍編號/(2)建號/(3)移轉房屋坐落 -->
+  <table class="deedtax123">
+    <tr>
+      <th rowspan="2" style="width:12%">(1)房　　屋<br><span class="item__space">稅籍編號</span></th>
+      <th colspan="2" style="line-height: 12pt;">鄉鎮<br>市區</th>
+      <th colspan="2">村里</th>
+      <th colspan="4">冊頁(棟)</th>
+      <th colspan="3">分戶號</th>
+      <th rowspan="2" style="width:8%">(2)建號</th>
+      <td rowspan="2" style="width:17.8%" class="bluefont">
+        {{ yfcase.yfcaseBigSection|default_if_none:"" }}段{{ yfcase.builds.first.buildNumber|default_if_none:"" }}     
+      </td>
+      <th rowspan="2" style="width:11%">(3)移　　轉<br><span class="item__space">房屋坐落</span></th>
+      <td rowspan="2" class="bluefont" style="text-align: left;">
+        {{ yfcase.fullAddress|default_if_none:"" }}
+      </td>
+    </tr>
+    <tr>
+      <td style="width:2.2%;height:24px;" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"0:1"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"1:2"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"2:3"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"3:4"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"4:5"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"5:6"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"6:7"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"7:8"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"8:9"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"9:10"|default_if_none:"" }}</td>
+      <td style="width:2.2%" class="bluefont">{{ yfcase.yfcaseDeedtaxHouseTaxRegistrationNumber|slice:"10:11"|default_if_none:"" }}</td>
+    </tr>
+  </table>
+
+  <!-- (4)立契日期或使用執照核發日期（限房屋建造完成前取得所有權案件）/(5)申報日期 -->
+  <table class="deedtax45">
+    <tr>
+      <th style="width:31%;">
+        (4)立契日期或使用執照核發日期（限房<br>
+        <span class="item__space">屋建造完成前取得所有權案件）</span>
+      </th>
+      <td style="width:14%;" class="bluefont">
+        {{ yfcase.yfcaseDeedtaxEstablishmentDate|chinese_year|default_if_none:"" }}年
+        {{ yfcase.yfcaseDeedtaxEstablishmentDate|date:"m" }}月
+        {{ yfcase.yfcaseDeedtaxEstablishmentDate|date:"d" }}日
+      </td>
+      <th style="width:30%;text-align:left;">■ 1.一般申報案件<br> □ 2.房屋建造完成前取得所有權案件</th>
+      <th style="width:11%;">(5)申報日期</th>
+      <td class="bluefont">
+        {{ yfcase.yfcaseDeedtaxDeclarationDate|chinese_year|default_if_none:"" }}年
+        {{ yfcase.yfcaseDeedtaxDeclarationDate|date:"m" }}月
+        {{ yfcase.yfcaseDeedtaxDeclarationDate|date:"d" }}日
+      </td>
+    </tr>
+  </table>
+
+  <!-- (6)移轉價格(新臺幣) -->
+
+  <table class="deedtax6">
+    <tr>
+      <th style="width:12%">(6)移轉價格<br><span class="item__space">(新臺幣)</span></th>
+      <td style="width:20.5%;text-align:right;" class="bluefont">{{ yfcase.yfcaseDeedtaxTransferPrice|default_if_none:"" }} 元</td>
+      <th style="text-align:left;font-size:10.5pt;">1.□請按照評定標準價格核課契稅。<br>2.■本件係領買標購公產或法院拍賣案件請按照評定標準價格或申報移轉價格從低核課契稅。</th>
+    </tr>
+  </table>
+
+  <!-- (7)茲委託 -->
+  <table class="deedtax7">
+    <tr>
+      <th rowspan="2">(7)茲委託</th>
+      <td rowspan="2" style="width:10%;text-align:right;border-left:hidden;border-right:hidden;" class="bluefont">
+        {{ yfcase.yfcaseDeedtaxClient|default_if_none:"" }}
+      </td>
+      <td style="border-bottom:hidden;">先生</td>
+      <th rowspan="2" style="border-left:hidden;font-size:11pt;">代辦契稅申報、領取契稅繳款書或免稅證明書、前業主應繳未繳之房屋稅繳款書及領回證件等事項。</th>
+    </tr>
+    <tr>
+      <td>女士</td>
+    </tr>
+  </table>
+  
+  <!--原所有權人：個人持分 / 所有持分-->
+  <table class="deedtax8910">
+    <!-- (8)原所有權人 -->
+    <tr>
+      <th rowspan="6" style="width:12%">(8)原所有權人</th>
+      <td rowspan="2" style="width:10%">姓名或名稱</td>
+      <td style="width:17.7%">國民身分證或統一編號</td>
+      <td colspan="2">出生年</td>
+      <td rowspan="2" style="width:8%">權利移<br>轉範圍</td>
+      <td rowspan="2">通訊地址/<small>新所有權人請填移轉後房屋稅繳款書送單地址</td>
+      <td rowspan="2" style="width:8%">蓋章或<br>簽名</td>
+
+    </tr>
+    <tr>
+      <td>電話</td>
+      <td>月</td>
+      <td>日</td>
+    </tr>
+    <tr>
+      <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDebtor|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxDebtorIdentityCard|default_if_none:"" }}</td>
+      <td colspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxDebtorBirthday|chinese_year|default_if_none:"" }}</td>
+      <td rowspan="2" class="bluefont">
+        {% if yfcase.yfcaseDeedtaxDebtorBuildHoldingPointPersonal %}
+          {{ yfcase.yfcaseDeedtaxDebtorBuildHoldingPointPersonal }}/{{ yfcase.yfcaseDeedtaxDebtorBuildHoldingPointAll }}
+        {% endif %}
+      </td>
+      <td rowspan="2" class="bluefont" style="text-align:left;padding-left:5px;">
+        {{ yfcase.yfcaseDeedtaxDebtorCity|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorTownship|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorVillage|default_if_none:"" }}{{ yfcase.fcaseDeedtaxDebtorNeighbor|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorStreet|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorSection|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorLane|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorAlley|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorNumber|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxDebtorFloor|default_if_none:"" }}
+      </td>
+      <td rowspan="2" class="bluefont"></td>
+    </tr>
+    <tr>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxDebtorMobilePhone|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxDebtorBirthday|date:"m"|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxDebtorBirthday|date:"d"|default_if_none:"" }}</td>
+    </tr>
+    <tr>
+      <td rowspan="2"></td>
+      <td></td>
+      <td colspan="2"></td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+
+    <!-- (9)新所有權人 -->
+    {% if yfcase.yfcaseCreditor != None %}
+    <tr>
+      <th rowspan="4">(9)新所有權人</th>
+      <td rowspan="2" style="text-align:left;" class="bluefont">
+        {{ yfcase.yfcaseCreditor|default_if_none:"" }}
+      </td>
+      <td class="bluefont">
+        {{ yfcase.yfcaseDeedtaxCreditorIdentityCard|default_if_none:"" }}
+      </td>
+      <td colspan="2" class="bluefont">
+        {{ yfcase.yfcaseDeedtaxCreditorBirthday|chinese_year|default_if_none:"" }}
+      </td>
+      <td rowspan="2" class="bluefont">
+        {% if yfcase.yfcaseDeedtaxCreditorBuildHoldingPointPersonal %}
+          {{ yfcase.yfcaseDeedtaxCreditorBuildHoldingPointPersonal }}/{{ yfcase.yfcaseDeedtaxCreditorBuildHoldingPointAll }}
+        {% endif %}
+      </td>
+      <td rowspan="2" class="bluefont" style="text-align:left;padding-left:5px;">
+        {{ yfcase.yfcaseDeedtaxCreditorCity|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorTownship|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorVillage|default_if_none:"" }}{{ yfcase.fcaseDeedtaxDebtorNeighbor|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorStreet|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorSection|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorLane|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorAlley|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorNumber|default_if_none:"" }}{{ yfcase.yfcaseDeedtaxCreditorFloor|default_if_none:"" }}
+      </td>
+      <td rowspan="2"></td>
+    </tr>
+    <tr>
+      <td class="bluefont">
+        {{ yfcase.yfcaseDeedtaxCreditorMobilePhone|default_if_none:"" }}
+      </td>
+      <td class="bluefont">
+        {{ yfcase.yfcaseDeedtaxCreditorBirthday|date:"m"|default_if_none:"" }}
+      </td>
+      <td class="bluefont">
+        {{ yfcase.yfcaseDeedtaxCreditorBirthday|date:"d"|default_if_none:"" }}
+      </td>
+    </tr>
+    {% else %}
+      <tr>
+        <th rowspan="4" class="title1" style="width: 100px;">(9)新所有權人</th>
+        <td rowspan="2" class="title2 bluefont">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            <span class="title2 bluefont">揚富開發<br>有限公司</span>
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司"%}
+            <span class="title2 bluefont">鉅鈦開發<br>有限公司</span>
+          {% endif %}
+        </td>
+        <td class="title2 bluefont">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            64187207
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司"%}
+            83554300
+          {% endif %}
+        </td>
+        <td colspan="2" class="title2 bluefont">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            107
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司" %}
+            109
+          {% endif %}
+        </td>
+        <td rowspan="2" class="title2 bluefont">
+          {% if yfcase.yfcaseDeedtaxCreditorBuildHoldingPointPersonal %}
+            {{ yfcase.yfcaseDeedtaxCreditorBuildHoldingPointPersonal }}/{{ yfcase.yfcaseDeedtaxCreditorBuildHoldingPointAll }}
+          {% endif %}
+        </td>
+        <td rowspan="2" class="title2 bluefont" style="text-align:left;padding-left:5px;">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            臺中市大里區西榮里新仁路三段49號1樓
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司"%}
+            臺中市大里區西榮里新仁路三段72巷3號1樓
+          {% endif %}
+        </td>
+        <td rowspan="2" class="title2 bluefont"></td>
+      </tr>
+      <tr>
+        <td class="title2 bluefont"></td>
+        <td class="title2 bluefont">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            01
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司"%}
+            03
+          {% endif %}
+        </td>
+        <td class="title2 bluefont">
+          {% if yfcase.yfcaseCompany == "揚富開發有限公司" %}
+            23
+          {% elif yfcase.yfcaseCompany == "鉅鈦開發有限公司"%}
+            11
+          {% endif %}
+        </td>
+      </tr>
+    {% endif %}
+
+
+    <tr>
+      <td rowspan="2" class="bluefont">法定代理人<br>陳美純</td>
+      <td class="bluefont">L203130632</td>
+      <td colspan="2" class="bluefont">30</td>
+      <td rowspan="2" class="bluefont"></td>
+      <td rowspan="2" class="bluefont" style="text-align:left;padding-left:5px;">臺中市大里區西榮里7鄰新仁路三段72巷3號</td>
+      <td rowspan="2" class="bluefont"></td>
+    </tr>
+    <tr>
+      <td class="bluefont"></td>
+      <td class="bluefont">10</td>
+      <td class="bluefont">31</td>
+    </tr>
+    
+    <!-- (10)代理人 -->
+    {% for user in users %}
+      {% if user.userFullName == yfcase.yfcaseDeedtaxClient %}
+        <tr>
+          <th rowspan="4">(10)代理人</th>
+          <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxClient|default_if_none:"" }}</td>
+          <td class="bluefont">{{ user.userIdentityCard|default_if_none:"" }}</td>
+          <td colspan="2" class="bluefont">{{ user.userBirthday|chinese_year|default_if_none:"" }}</td>
+          <td rowspan="2" class="bluefont"></td>
+          <td rowspan="2" class="bluefont" style="text-align:left;padding-left:5px;">
+            {{ user.userCountry|default_if_none:"" }}{{ user.userTownship|default_if_none:"" }}{{ user.userVillage|default_if_none:"" }}{{ user.userNeighbor|default_if_none:"" }}{{ user.userStreet|default_if_none:"" }}{{ user.userSection|default_if_none:"" }}{{ user.userLane|default_if_none:"" }}{{ user.userAlley|default_if_none:"" }}{{ user.userNumber|default_if_none:"" }}{{ user.userFloor|default_if_none:"" }}
+          </td>
+          <td rowspan="2" class="bluefont"></td>
+        </tr>
+        <tr>
+          <td class="bluefont">{{ user.userMobilePhone|default_if_none:"" }}</td>
+          <td class="bluefont">{{ user.userBirthday|date:"m"|default_if_none:"" }}</td>
+          <td class="bluefont">{{ user.userBirthday|date:"d"|default_if_none:"" }}</td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+
+  </table>
+  
+  <!-- (11)案件類型 -->
+  <table class="deedtax11">
+    <tr>
+      <th style="width:12%;height:50px;">(11)案件類型</th>
+      <td>□ 1.買賣 □ 2.典權 □ 3.交換</td>
+      <td style="text-align:left;border-left:hidden;border-right:hidden;">□ 4.0贈與<br>□ 4.1夫妻贈與</td>
+      <td>□ 5.分割 □ 6.占有 □ 7.二親等間買賣</td>
+      <td style="text-align:left;border-left:hidden;border-right:hidden;">□ 8.1標購<br>■ 8.2拍賣<br>□ 8.3領買</td>
+      <td>□ 9.1判決<br>□ 9.2調解<br>□ 9.3和解</td>
+    </tr>
+  </table>
+  
+  <!-- (12)移轉情形 -->
+  <table class="deedtax12">
+    <tr>
+      <th rowspan="3" style="width:12%;">(12)移轉情形</th>
+      <td style="width:10%;height:25px;">層次</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel1|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel2|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel3|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel4|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel5|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferLevel6|default_if_none:"" }}</td>
+      <td style="width:8%;">公設建號</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicBuildingNumber1|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicBuildingNumber2|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicBuildingNumber3|default_if_none:"" }}</td>
+      <td style="width:6%;" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicBuildingNumber4|default_if_none:"" }}</td>
+      <td rowspan="3" style="text-align:left;">■未辦保存登<br>&emsp;記部分一併<br>&emsp;移轉</td>
+    </tr>
+    <tr>
+      <td style="height:25px;">構造</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure1|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure2|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure3|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure4|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure5|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferStructure6|default_if_none:"" }}</td>
+      <td rowspan="2">持分比例</td>
+      <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicHoldings1|default_if_none:"" }}</td>
+      <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicHoldings2|default_if_none:"" }}</td>
+      <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicHoldings3|default_if_none:"" }}</td>
+      <td rowspan="2" class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferPublicHoldings4|default_if_none:"" }}</td>
+    </tr>
+    <tr>
+      <td style="height:25px;">面&emsp;&emsp;積<br>(平方公尺)</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea1|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea2|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea3|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea4|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea5|default_if_none:"" }}</td>
+      <td class="bluefont">{{ yfcase.yfcaseDeedtaxBuildingTransferArea6|default_if_none:"" }}</td>
+    </tr>
+  </table>
+
+  <!--( 13-19 )-->
+  <table class="deedtax13To19">
+    <!-- (13)申請減免項目 -->
+    <tr>
+      <th style="width:12%;height:45px;">(13)申請減免<br><span style="padding-left:28px;">項&emsp;&emsp;目</span></th>
+      <td style="width:10%">□ 1.全免<br>□ 2.減徵</td>
+      <td colspan="3" style="text-align:left;">合於契稅條例第(　　   )條規定。<br>合於(　　              )條例第(　　  )條(　　  )款規定。</td>
+    </tr>
+    
+    <!-- (14)檢　　附 -->
+    <tr>
+      <th>(14)檢　　附</th>
+      <td colspan="4" style="text-align:left;">
+        □契約書正本(查驗後退還)、影本（貼印花部分）1份，　□所有權狀影本共(　　)份。<br>
+        ■不動產權利移轉證明書影本1份，□法院判決書及判決確定證明書影本( 　 )份。<br>
+        ■身分證明文件影本(   　)份，□該移轉房屋已納房屋稅繳款書影本1份　□其他文件(　　　) 份。<br>
+        □納稅者如有依納稅者權利保護法第7 條第8 項但書為重要事項陳述者，請另填報「聲明事項表」並檢附相關證明文件。
+      </td>
+    </tr>
+    
+    <!-- (15)持分共有房屋繳款書填發方式     -->
+    <tr>
+      <th>(15)持分共有<br>房屋繳款書填<br>發方式</th>
+      <td colspan="4" style="text-align:left;height:60px;">
+        □本房屋為持分共有，已推定共有人           為管理人繳納房屋稅。<br>
+        ■本房屋為持分共有，請依稅捐稽徵法第12條規定，按持分比例分別發單課徵房屋稅。
+      </td>
+    </tr>
+    
+    <!-- (16)契稅繳款書領回方式 -->
+    {% for user in users %}
+      {% if user.userFullName == yfcase.yfcaseDeedtaxClient %}
+        <tr>
+          <th colspan="5" style="height:30px;">(16)契稅繳款書領回方式&emsp;
+            {% if yfcase.yfcaseDeedtaxReclaimMethod == '親領' %}
+              <sanp class="bluefont">■ 親領&emsp;&emsp; </sanp>□ 郵寄&emsp;請寄：
+            {% elif yfcase.yfcaseDeedtaxReclaimMethod == '郵寄' %}
+              □ 親領&emsp;&emsp; <sanp class="bluefont">■ 郵寄&emsp;請寄：{{ user.userCountry|default_if_none:"" }}{{ user.userTownship|default_if_none:"" }}{{ user.userVillage|default_if_none:"" }}{{ user.userNeighbor|default_if_none:"" }}{{ user.userStreet|default_if_none:"" }}{{ user.userSection|default_if_none:"" }}{{ user.userLane|default_if_none:"" }}{{ user.userAlley|default_if_none:"" }}{{ user.userNumber|default_if_none:"" }}{{ user.userFloor|default_if_none:"" }}</sanp>
+            {% endif %}
+          </th>
+        </tr>
+      {% endif %}
+    {% endfor %}
+    
+    <!-- (17)結案簡訊通知+(18)備註 -->
+    {% for user in users %}
+      {% if user.userFullName == yfcase.yfcaseDeedtaxClient %}
+        <tr>
+          <th style="height:50px;">(17)結案簡訊<br><span class="item__space__2">通&emsp;&emsp;知</span></th>
+          <td colspan="2" style="width:40%;text-align:left;">
+            {% if yfcase.yfcaseDeedtaxClosingNewsletter == '需要' %}
+              <sanp class="bluefont">■ 需要，手機號碼：{{ user.userMobilePhone|default_if_none:"" }}</sanp><br>□ 不需要
+            {% elif yfcase.yfcaseDeedtaxClosingNewsletter == '不需要' %}
+              □ 需要，手機號碼：<br><sanp class="bluefont">■ 不需要</sanp>
+            {% endif %}
+          </td>
+          <th style="width:12%;">(18)備&emsp;&emsp;註</th>
+          <td style="text-align: left;color:blue;">
+            {{ yfcase.yfcaseDeedtaxRemarks|default_if_none:"" }}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor%}
+    
+    <!-- (19)申報人取得房屋... -->
+    <tr>
+      <th colspan="5" style="height:70px;font-weight: 700;">
+        (19)申報人取得房屋，請依附聯填報不動產移轉後使用情形，供自住使用者，可申請按自住房屋稅率課徵房屋稅及自用住宅<br>
+        <span class="item__space__2">地稅率課徵地價稅。未填報附聯者，請於房屋移轉後，儘速向所屬稽徵機關申報移轉後的房屋使用情形，以維護您的</span><br>
+        <span class="item__space__2">權益。</span><br>
+        <span class="item__space__2">■申請(續填報附聯)&emsp;&emsp;&emsp;&emsp; □不申請 (請務必擇一勾選)</span>
+      </th>
+    </tr>
+
+  </table>
+
+
+  <table class="deedtaxFooter">
+    <tr>
+      <td style="height:90px;text-align:left;padding:0px 10px;">
+        茲依照契稅條例第14條、第15條、第16條規定填具契稅申報書，請依法核定應納契稅，並依照房屋稅條例第7條之規定申請變更房屋稅納稅義務人名義。<br><br><br><br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;申報人 揚富開發有限公司 法定代理人陳美純&emsp;&emsp;&emsp;&emsp;（蓋章或簽名）
+      </td>
+    </tr>
+  </table>
+  
+  <!--申報人免填-->
+  <table class="deedtaxNotWrite">
+    <tr>
+      <td rowspan="2" style="width:2.5%;height:100px;">
+        申報人免填
+      </td>
+      <td rowspan="2" style="width:10%;">房&ensp;屋&ensp;稅<br>查欠情形</td>
+      <td rowspan="2" style="width:64%;text-align:left;">
+        □一般案件&emsp;&emsp;□截至&emsp;&emsp;年&emsp;&emsp;月無欠繳房屋稅&emsp;&emsp;□即予開徵&emsp;&emsp;&emsp;&emsp;元<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;□尚有欠繳房屋稅&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;□未即予開徵<br>
+        □法院拍賣案件<br>
+        <br>
+        查欠人員蓋章
+      </td>
+      <td>房屋稅承辦人員蓋章</td>
+    </tr>
+    <tr>
+      <td></td>
+    </tr>
+  </table>
+  
+  <!--說明-->
+  <table style="width:100%;">
+    <tr>
+      <td style="vertical-align:text-top;width:6%;font-size:10.5pt;line-height: 16px;">說明：</td>
+      <td style="font-size:10.5pt;line-height: 16px;">
+        依據納稅者權利保護法第7 條規定，納稅者基於獲得租稅利益，違背稅法之立法目的，濫用法律形式，以非常規交易規避租稅構成要件之該當，以達成與交易常規相當之經濟效果，為租稅規避。稅捐稽徵機關仍根據與實質上經濟 利益相當之法律形式，成立租稅上請求權，並加徵滯納金及利息，不得另課予逃漏稅捐之處罰，但納稅者於申報或 調查時，對重要事項隱匿或為虛偽不實陳述或提供不正確資料，致使稅捐稽徵機關短漏核定稅捐者，不在此限。
+      </td>
+    </tr>
+  </table>    
+
+</body>
+</html>

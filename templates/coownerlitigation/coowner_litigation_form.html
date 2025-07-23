@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style>
+    .form__container { border-radius: 5px; background-color: #f2f2f2; padding: 20px; margin-top: 20px}
+    .help-block {color: red;}
+    .bluefont {color:blue;font-size:12pt;}
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="form__container">
+  <h1>{{ title }}</h1>
+  
+  <form action="" method="post" id="coownerLitigationForm">{% csrf_token %}
+    {{ form.coownerheir|attr:"type:hidden" }}
+    
+    <div class="row mt-3">
+      <div class="col-md-2 mt-3">
+        <label for="{{ form.coOwnerLitigationName.id_for_label }}">{{ form.coOwnerLitigationName.label }}</label>
+        {{ form.coOwnerLitigationName|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationName.error }}
+        </div>
+      </div>
+      <div class="col-md-2 mt-3">
+        <label for="{{ form.coOwnerLitigationIdentityCard.id_for_label }}">{{ form.coOwnerLitigationIdentityCard.label }}</label>
+        {{ form.coOwnerLitigationIdentityCard|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationIdentityCard.error }}
+        </div>
+      </div>
+      <div class="col-md-7 mt-3">
+        <label for="{{ form.coOwnerLitigationAddress.id_for_label }}">{{ form.coOwnerLitigationAddress.label }}</label>
+        {{ form.coOwnerLitigationAddress|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationAddress.error }}
+        </div>
+      </div>
+      <div class="col-md-1 mt-3">
+        <label for="{{ form.coOwnerLitigationLifeOrDie.id_for_label }}">{{ form.coOwnerLitigationLifeOrDie.label }}</label>
+        {{ form.coOwnerLitigationLifeOrDie|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationLifeOrDie.error }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-3">
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerLitigationLandHPPersonnal.id_for_label }}">{{ form.coOwnerLitigationLandHPPersonnal.label }}</label>
+        {{ form.coOwnerLitigationLandHPPersonnal|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationLandHPPersonnal.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerLitigationLandHPAll.id_for_label }}">{{ form.coOwnerLitigationLandHPAll.label }}</label>
+        {{ form.coOwnerLitigationLandHPAll|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationLandHPAll.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerLitigationBuildHPPersonnal.id_for_label }}">{{ form.coOwnerLitigationBuildHPPersonnal.label }}</label>
+        {{ form.coOwnerLitigationBuildHPPersonnal|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationBuildHPPersonnal.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerLitigationBuildHPAll.id_for_label }}">{{ form.coOwnerLitigationBuildHPAll.label }}</label>
+        {{ form.coOwnerLitigationBuildHPAll|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerLitigationBuildHPAll.error }}
+        </div>
+      </div>
+
+    </div>
+    
+    <div class="row mt-3">
+      <div class="col-md-6 mt-3">
+        <a href="{% url 'yfcase:coowner_edit' instance_coowner.yfcase_id %}" class="btn btn-secondary form-control" >返回</a>
+      </div>
+
+      <div class="col-md-6 mt-3">
+        {% if instance_coowner_litigation.id %}
+          <input type="submit" class="btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="btn btn-info form-control" value="新增" onclick="get_coownerlitigation_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+    
+  </form>
+</div>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    // 此為欄位驗証的JS
+    $('#coownerLitigationForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          coOwnerLitigationName: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              }
+            }
+          },
+          coOwnerLitigationLandHPPersonnal: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerLitigationLandHPAll: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerLitigationBuildHPPersonnal: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerLitigationBuildHPAll: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          }
+        }
+      });
+  });
+  
+  function get_coownerlitigation_yfcase() {
+    var url = (window.location.pathname).replace("/coownerheir/","").replace("/coownerlitigation/create/",""); 
+    document.getElementById("id_coownerheir").value = url;
+  }
+ 
+</script>
+{% endblock content %}

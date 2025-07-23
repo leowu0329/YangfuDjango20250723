@@ -1,0 +1,190 @@
+<!-- 勘查結果 -->
+{% load urlify %}
+
+<style>
+  .survey__table { border: 3px solid black; }
+  .survey__th { width: 10%; background-color: Khaki; border: 1px solid black; text-align: center;font-size: 1.2em;} 
+  .survey__td { border: 1px dotted black;font-size: 1.2em; }
+</style>
+
+
+<table class="survey__table">
+  <tr>
+    <th class="survey__th">
+      初勘日
+    </th>
+    <th class="survey__th">會勘日</th>
+    <th class="survey__th">法拍公告<br><small>(證物三)</small></th>
+    <th class="survey__th">998連結</th>
+    <th class="survey__th">物件照片<br><small>(證物四)</small></th>
+    <th class="survey__th">法拍記錄<br><small>(證物七)</small></th>
+    <th class="survey__th">標的物<br><small>(現場勘查)</small></th>
+    <th class="survey__th">收發文簿</th>
+    <th class="survey__th">流水帳</th>
+  </tr>
+  <tr>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {{survey.surveyFirstDay|default_if_none:""}}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {{survey.surveySecondDay|default_if_none:""}}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 法拍公告 -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyForeclosureAnnouncementLink %}
+          <a href="{{survey.surveyForeclosureAnnouncementLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-gavel fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 998連結 -->
+      {% for survey in object.surveys.all %}
+        {% if survey.survey988Link %}
+          <a href="{{survey.survey988Link}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-link fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 物件照片(證物四) -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyObjectPhotoLink %}
+          <a href="{{survey.surveyObjectPhotoLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-home fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 法拍記錄 -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyForeclosureRecordLink %}
+          <a href="{{survey.surveyForeclosureRecordLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-clipboard fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 標的物(現場勘查) -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyObjectViewLink %}
+          <a href="{{survey.surveyObjectViewLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-film fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 收發文薄 -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyPagesViewLink %}
+          <a href="{{survey.surveyPagesViewLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="far fa-file-alt fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+    <td class="survey__td">
+      <!-- 流水帳 -->
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyMoneytViewLink %}
+          <a href="{{survey.surveyMoneytViewLink}}" target="_blank">
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="far fa-money-bill-alt fa-stack-1x"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+</table>
+
+<!-- <table class="survey__table">
+  <tr>
+    <th class="survey__th">
+      初勘日
+    </th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {{survey.surveyFirstDay}}
+      {% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <th class="survey__th">會勘日</th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {{survey.surveySecondDay}}
+      {% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <th class="survey__th">法拍公告<small>(證物三)</small></th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyForeclosureAnnouncementLink %}
+          <a href="{{survey.surveyForeclosureAnnouncementLink}}" target="_blank">法拍公告</a>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <th class="survey__th">998連結</th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {% if survey.survey988Link %}
+          <a href="{{survey.survey988Link}}" target="_blank">998連結</a>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <th class="survey__th">物件照片<small>(證物四)</small></th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyObjectPhotoLink %}
+          <a href="{{object.surveys.surveyObjectPhotoLink}}" target="_blank">物件照片</a>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <th class="survey__th">法拍記錄<small>(證物七)</small></th>
+    <td class="survey__td">
+      {% for survey in object.surveys.all %}
+        {% if survey.surveyForeclosureRecordLink %}
+          <a href="{{survey.surveyForeclosureRecordLink}}" target="_blank">法拍記錄</a>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+</table> -->
+

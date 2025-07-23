@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style>
+    .form__container { border-radius: 5px; background-color: #f2f2f2; padding: 20px; margin-top: 20px}
+    
+    .help-block {
+      color: red;
+    }
+    
+    .bluefont {
+      color:blue;
+      font-size:12pt;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="form__container">
+  <h1>{{ title }}</h1>
+  
+  
+  <form action="" method="post" id="coownerHeirForm">{% csrf_token %}
+    {{ form.coowner|attr:"type:hidden" }}
+  
+    
+    <div class="row mt-3">
+      <div class="col-md-2 mt-3">
+        <label for="{{ form.coOwnerHeirName.id_for_label }}">{{ form.coOwnerHeirName.label }}</label>
+        {{ form.coOwnerHeirName|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirName.error }}
+        </div>
+      </div>
+      <div class="col-md-2 mt-3">
+        <label for="{{ form.coOwnerHeirIdentityCard.id_for_label }}">{{ form.coOwnerHeirIdentityCard.label }}</label>
+        {{ form.coOwnerHeirIdentityCard|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirIdentityCard.error }}
+        </div>
+      </div>
+      <div class="col-md-7 mt-3">
+        <label for="{{ form.coOwnerHeirAddress.id_for_label }}">{{ form.coOwnerHeirAddress.label }}</label>
+        {{ form.coOwnerHeirAddress|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirAddress.error }}
+        </div>
+      </div>
+      <div class="col-md-1 mt-3">
+        <label for="{{ form.coOwnerHeirLifeOrDie.id_for_label }}">{{ form.coOwnerHeirLifeOrDie.label }}</label>
+        {{ form.coOwnerHeirLifeOrDie|add_class:'form-control'|attr:"autocomplete:off" }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirLifeOrDie.error }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-3">
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerHeirLandHPPersonnal.id_for_label }}">{{ form.coOwnerHeirLandHPPersonnal.label }}</label>
+        {{ form.coOwnerHeirLandHPPersonnal|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirLandHPPersonnal.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerHeirLandHPAll.id_for_label }}">{{ form.coOwnerHeirLandHPAll.label }}</label>
+        {{ form.coOwnerHeirLandHPAll|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirLandHPAll.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerHeirBuildHPPersonnal.id_for_label }}">{{ form.coOwnerHeirBuildHPPersonnal.label }}</label>
+        {{ form.coOwnerHeirBuildHPPersonnal|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirBuildHPPersonnal.error }}
+        </div>
+      </div>
+      <div class="col-md-3 mt-3">
+        <label for="{{ form.coOwnerHeirBuildHPAll.id_for_label }}">{{ form.coOwnerHeirBuildHPAll.label }}</label>
+        {{ form.coOwnerHeirBuildHPAll|add_class:'form-control' }}
+        <div class="invalid-feedback">
+          {{ form.coOwnerHeirBuildHPAll.error }}
+        </div>
+      </div>
+
+    </div>
+  
+    
+    <div class="row mt-3">
+      <div class="col-md-6 mt-3">
+        <a href="{% url 'yfcase:coowner_edit' instance_coowner.yfcase_id %}" class="btn btn-secondary form-control" >返回</a>
+      </div>
+      <div class="col-md-6 mt-3">
+        {% if instance_coowner_heir.id %}
+          <input type="submit" class="btn btn-success form-control" value="更新">
+        {% else %}
+          <input type="submit" class="btn btn-info form-control" value="新增" onclick="get_coownerheir_yfcase()">
+        {% endif %}
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+  $(document).ready(function(){
+    // 此為欄位驗証的JS
+    $('#coownerHeirForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          coOwnerHeirName: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              }
+            }
+          },
+          coOwnerHeirLandHPPersonnal: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerHeirLandHPAll: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerHeirBuildHPPersonnal: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          },
+          coOwnerHeirBuildHPAll: {
+            validators: {
+              notEmpty: {
+                message: '此一欄位不得為空'
+              },
+              integer: {
+                message: '此欄需為正整數，且需大於 1 '
+              },
+              between: {
+                min: 1,
+                max: 9999999,
+                message: '此欄需為正整數，且需大於 1 '
+              }
+            }
+          }
+        }
+      });
+  });
+  
+  function get_coownerheir_yfcase() {
+    var url = (window.location.pathname).replace("/coownerinfo/","").replace("/coownerheir/create/",""); 
+    document.getElementById("id_coowner").value = url;
+  }
+</script>
+{% endblock content %}

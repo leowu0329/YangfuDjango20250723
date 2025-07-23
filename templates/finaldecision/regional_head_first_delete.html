@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block style %}
+
+{% endblock style %}
+
+{% block content %}
+  <form action="" method="post">{% csrf_token %}
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- header -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">刪除</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <!-- body -->
+        <form method="POST" action="" enctype='multipart/form-data'>{% csrf_token %}
+          <div class="modal-body">
+            <p>你確定要刪除 "{{instance.finalDecisionDeterminationFirst}}"的相關資料嗎 ?</p>
+            {{ instance.finalDecisionRemarkFirst }}
+            {{ instance.finalDecisionRegionalHeadFirst }}
+            {{ instance.finalDecisionRegionalHeadDateFirst }}
+            {{ instance.finalDecisionDeterminationFirst }}
+            {{ instance.finalDecisionRegionalHeadWorkAreaFirst }}
+
+
+            {{ form.yfcase|attr:"type:hidden" }} 
+            {{ form.finalDecisionRemarkFirst|attr:"type:hidden" }}
+            {{ form.yfcase|attr:"type:hidden" }}
+            {{ form.finalDecisionRegionalHeadFirst|attr:"type:hidden" }}
+            {{ form.finalDecisionRegionalHeadDateFirst|attr:"type:hidden" }}
+            {{ form.finalDecisionDeterminationFirst|attr:"type:hidden" }}
+            {{ form.finalDecisionRegionalHeadWorkAreaFirst|attr:"type:hidden" }}
+          </div>
+          <!-- footer -->
+          <div class="modal-footer">
+            <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary" >返回</a>
+            <input type="submit" class="btn btn-secondary" value="清除" onclick="set_determination_first_empty()">
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+
+  <!-- 為防止在運行jquery程式碼時出錯Uncaught ReferenceError: $ is not defined，所以要將jquery.min.js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+  <script>
+    function set_determination_first_empty() {
+      $(function() {
+        document.getElementById("id_finalDecisionDeterminationFirst").value = "";
+        document.getElementById("id_finalDecisionRegionalHeadFirst").value = "" ;
+        document.getElementById("id_finalDecisionRegionalHeadDateFirst").value = "";
+        document.getElementById("id_finalDecisionRegionalHeadWorkAreaFirst").value = "";
+        document.getElementById("id_finalDecisionRemarkFirst").value = "";
+      });
+    }
+  </script>
+{% endblock %}

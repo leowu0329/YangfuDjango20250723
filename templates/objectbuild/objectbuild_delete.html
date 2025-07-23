@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}
+  {{ title }}
+{% endblock head_title %}
+
+{% block style %}
+  <style type="text/css">
+    * { font-family: 'Roboto','Noto Sans TC', sans-serif;}
+  </style>
+{% endblock style %}
+
+
+{% block content %}
+<form method="POST" action="" enctype='multipart/form-data'>{% csrf_token %}
+  <div class="container-sm border border-danger border-3 rounded mt-3 bg-light">
+    <!-- 標題  -->
+    <div class="row">
+      <div class="col my-1">
+        <div class="bg-danger fs-3 fw-bold text-white text-center p-2 rounded">
+          {{ title }}
+        </div>
+      </div>
+    </div>
+    <br>
+    <h4>你確定要刪除 "{{instance.objectBuildAddress}}" 這筆資料嗎 ?</h4>
+    <br>
+    <!-- footer -->
+    <div class="row mt-3">
+      <div class="col-md-6"></div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <a href="{% url 'yfcase:yfcase_detail' instance_yfcase.id %}" class="btn btn-secondary form-control">返回</a>
+      </div>
+      <div class="col-md-3 d-grid gap-2 my-1">
+        <input type="submit" class="col btn btn-danger form-control" value="刪除" />
+      </div>
+    </div>
+
+  </div>
+</form>
+{% endblock %}

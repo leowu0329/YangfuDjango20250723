@@ -1,0 +1,46 @@
+<style>
+  .pagination {margin: 20px;}
+  .step-links a{
+    font-size: 14pt;
+    border: 1px solid grey;
+    padding: 5px;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    background-color: white;
+    color: blue;
+    border-radius: 5px;
+  }
+  .current {
+    font-size: 14pt;
+    border: 1px solid grey;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    background-color: lightgrey;
+    color: blue;
+    border-radius: 5px;
+  }
+</style>
+
+<div class="pagination justify-content-center">
+  <span class="step-links">
+    {% if object_list.has_previous %}
+      <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; 首頁</a>
+      <a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">上頁</a>
+    {% endif %}
+
+    <span class="current">
+       第{{ object_list.number }}頁 / 共{{ object_list.paginator.num_pages }}頁
+    </span> 
+
+    {% if object_list.has_next %}
+      <a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">次頁</a>
+      <a href="?page={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">末頁 &raquo;</a>
+    {% endif %}
+  </span>
+</div>

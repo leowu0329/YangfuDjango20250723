@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% load urlify %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block style %} 
+  <style>
+    * {
+      font-family: 'Roboto','Noto Sans TC', sans-serif;
+    }
+    .yfcase__detail__caption {
+      margin-top: 20px;
+      font-size: 24pt;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: bottom;
+    }
+    .yfcase__detail__test {
+      display: flex;
+      justify-content: space-between;
+    }
+    .yfcase__detail__subtitle {
+      margin-top: 20px;
+      direction: flex;
+      flex-direction: row;
+      text-align: right;
+    }
+    .yfcase__detail__subtitle > label {
+      font-size:16pt;
+      font-weight: 700;
+    }
+    th,td {
+      text-align: center;
+    }
+    th { color:black; }
+    td { font-weight: 600; font-size:16px; color:blue; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+    .link__button { font-size:12pt; }
+    .text-red { font-size: 10pt; color: red; font-weight: 700; }
+    .text-blue { font-size: 10pt; color: blue; font-weight: 700; }
+    .text-green { font-size: 10pt; color: green; font-weight: 700; }
+    .text-red-12 { font-size: 12pt; color: red; font-weight: 700; }
+    .text-blue-12 { font-size: 12pt; color: blue; font-weight: 700; }
+    .text-green-12 { font-size: 12pt; color: green; font-weight: 700; }
+    .text-mark { font-size: 10.5pt; background-color: yellow; font-weight: 700; }
+    .btn__icon__create { background-color: MediumBlue; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__update { background-color: DarkGreen; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__delete { background-color: DarkRed; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    
+    .row { margin-bottom: 30px;}
+  </style>
+{% endblock style %}
+
+{% block content %}
+
+
+  <!-- 標頭 -->
+  <div class="col">
+    <div class="yfcase__detail__caption">
+      {{object.yfcaseCaseNumber}}評量表
+    </div>
+  </div>
+
+  
+  <div class="col">
+    <div class="container col">
+
+      <!--基本資料-->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              基本資料
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                &nbsp;<a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:yfcase_update' object.id %}" role="button">變更</a>
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;"></div>
+      </div>
+
+      <!--基本資料樣版-->
+      <div class="row">
+        {% include "./partials/baseData.html" %}
+      </div>
+      
+      <!-- 土地資訊 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              土地資訊
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:land_create' object.id %}" role="button">新增</a>
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;">
+          {% if object.lands.count > 0 %}
+            合計：{{ object.get_land_holding_point_area_total|floatformat:"2" }} m<sup>2</sup> 
+            ({{ object.get_land_holding_point_area_total|m2toping|floatformat:"2" }} 坪)
+          {% endif %}
+        </div>
+      </div>
+
+      <!--土地樣版-->
+      <div class="row">
+        {% include "./partials/land.html" %}
+      </div>
+
+      <!-- 建物資訊 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              建物資訊
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:build_create' object.id %}" role="button">新增</a>
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;">
+          {% if object.builds.count > 0 %}
+            合計：{{ object.get_build_holding_point_after_group_total|floatformat:"2" }} m<sup>2</sup> 
+            ({{ object.get_build_holding_point_after_group_total|m2toping|floatformat:"2" }} 坪)
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="row">
+        <!--建物樣版-->
+        {% include "./partials/build.html" %}
+      </div>
+
+      <!-- 拍賣資訊 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              拍賣資訊
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                {% if object.auctions.all %}
+                  {% for auction in object.auctions.all %}
+                    &nbsp;<a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:auction_update' object.id auction.id %}" role="button">變更</a>
+                  {% endfor %}
+                {% else %}
+                  &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:auction_create' object.id %}" role="button">新增</a>
+                {% endif %}
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;"></div>
+      </div>
+
+      <div class="row">
+        <!--拍賣樣版-->
+        {% include "./partials/auction.html" %}
+      </div>
+  
+      <!-- 勘查記錄 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              勘查記錄
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                {% if object.surveys.all %}
+                  {% for survey in object.surveys.all %}
+                    &nbsp;<a class="btn btn-success btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:survey_update' object.id survey.id %}" role="button">變更</a>
+                  {% endfor %}
+                {% else %}
+                  &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:survey_create' object.id %}" role="button">新增</a>
+                {% endif %}
+              {% endif %}
+
+              {% if request.user == object.user or request.user.userRole == 1 %}
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;"></div>
+      </div>
+  
+      <div class="row">
+        <!--實勘樣版-->
+        {% include "./partials/survey.html" %}
+      </div>
+  
+      <!-- 參考物件 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              參考物件
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:objectbuild_create' object.id %}" role="button">新增</a>
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;">
+          {% if object.objectbuilds.count > 0 %}
+            時價：{{object.pbk|floatformat:0|intcomma}}元
+          {% endif %}
+        </div>
+      </div>
+    
+      <div class="row">
+        <!-- 參考物件分離樣版 -->
+        {% include "./partials/object_building.html" %}
+      </div> 
+
+      <!-- 最終判定 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              最終判定
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:finaldecision_create' object.id %}" role="button">新增</a>
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;"></div>
+      </div>
+      
+      <div class="row">
+        <!-- 最終判定樣版 -->
+        {% include "./partials/finalDecision.html" %}
+      </div>
+
+      <!-- 執行結果 -->
+      <div class="d-flex justify-content-between py-1">
+        <div>
+          <div>
+            <div style="font-size:16pt;font-weight: 700;display: flex;align-items: center; " >
+              執行結果
+              {% if request.user == object.user or request.user.userRole == 1 %}
+                {% if object.results.count == 0 %}
+                  &nbsp;<a class="btn btn-primary btn-sm py-0 font-weight-bold link__button" href="{% url 'yfcase:result_create' object.id %}" role="button">新增</a>
+                {% endif %}
+              {% endif %}
+            </div> 
+          </div>
+        </div>
+        <div style="font-size:14pt;display: flex;align-items: end;"></div>
+      </div>
+      
+      <div class="row">
+        <!-- 執行結果樣版 -->
+        {% include "./partials/result.html" %}
+      </div>
+
+    </div>
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,11 @@
+.vscode
+*.pyc
+__pycache__
+db.sqlite3
+Include
+Lib
+Scripts
+tcl
+backup/
+src/email_info.py
+src/.env

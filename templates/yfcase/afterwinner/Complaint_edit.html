@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+  <style type="text/css">
+    .help-block{
+      color:red;
+    }
+    .coowner__table { border-collapse: collapse;}
+    .coowner__table th { border: 1px solid black; background-color: yellow;padding: 0px;text-align: center;}
+    .coowner__table .coowner__td{ border: 1px solid black;text-align: center; }
+
+    .coownerheir__table  { border-collapse: collapse;width: 100%;}
+    .coownerheir__table th {border: 1px solid black; background-color: lightgreen;padding: 0px;text-align: center;font-size: 10pt;}
+    .coownerheir__table td { border: 1px solid black; font-size: 10pt;text-align: center;}
+    .coowner__table td.text-left { text-align: left; }
+
+    .btn__icon__create { background-color: MediumBlue; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__update { background-color: DarkGreen; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+    .btn__icon__delete { background-color: DarkRed; border:2px solid darkgrey; border-radius: 5px; padding:2px 7px; font-weight: 500; color:white; text-decoration:none; }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="col-md p-2 bg-light">
+  <!-- 程式主題的部份 -->
+  <form action="{% url 'yfcase:complaint_edit' yfcase.id %}" method="post" id="Complaint_edit_form" data-townships-url="{% url 'yfcase:ajax_load_townships' %}">{% csrf_token %}
+    <!-- header -->
+    <h1>{{title}}</h1>
+    
+    <div class="col mb-3 text-center fs-2 bg-warning rounded-pill">
+      訴訟狀 - 案號：{{ yfcase.yfcaseCaseNumber }}
+    </div>
+
+    <!-- 起訴狀填寫日期、訴訟狀委託人、土地公告現值、房屋課稅現值 -->
+    <div class="row">
+      <!-- 訴訟狀委託人 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintLitigationAgent.label }}
+          </label>
+          {{ form.yfcaseComplaintLitigationAgent|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintLitigationAgent.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 起訴狀填寫日期 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintComplaintDate.label }}
+          </label>
+          {{ form.yfcaseComplaintComplaintDate|add_class:'form-control border border-dark datepicker fieldcolor' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintComplaintDate.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 土地公告現值 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintPresentValueOfLandAnnouncement.label }}
+          </label>
+          {{ form.yfcaseComplaintPresentValueOfLandAnnouncement|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintPresentValueOfLandAnnouncement.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 房屋課稅現值 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintPresentValueOfHouseTax.label }}
+          </label>
+          {{ form.yfcaseComplaintPresentValueOfHouseTax|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintPresentValueOfHouseTax.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 裁判費、分割未果日期、土地面寬、土地深度 -->
+    <div class="row">
+      <!-- 裁判費 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintRefereeFee.label }}
+          </label>
+          {{ form.yfcaseComplaintRefereeFee|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintRefereeFee.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 分割未果日期 -->
+      <div class="col-md-3 mb-3">
+         <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintUnsuccessfulDate.label }}
+          </label>
+          {{ form.yfcaseComplaintUnsuccessfulDate|add_class:'form-control border border-dark datepicker fieldcolor' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintUnsuccessfulDate.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 土地面寬 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintLandWidth.label }}
+          </label>
+          {{ form.yfcaseComplaintLandWidth|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintLandWidth.error }}
+          </span>
+        </div>
+      </div>
+      <!-- 土地深度 -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintLandDepth.label }}
+          </label>
+          {{ form.yfcaseComplaintLandDepth|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintLandDepth.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 證物1 -->
+    <div class="row">
+      <div class="col-md mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintExhibit1.label }}
+          </label>
+          {{ form.yfcaseComplaintExhibit1|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintExhibit1.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- 證物2 -->
+    <div class="row">
+      <div class="col-md mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintExhibit2.label }}
+          </label>
+          {{ form.yfcaseComplaintExhibit2|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintExhibit2.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- 證物3 -->
+    <div class="row">
+      <div class="col-md mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintExhibit3.label }}
+          </label>
+          {{ form.yfcaseComplaintExhibit3|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintExhibit3.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- 證物4 -->
+    <div class="row">
+      <div class="col-md mb-3">
+        <div class="form-group">
+          <label>
+            {{ form.yfcaseComplaintExhibit4.label }}
+          </label>
+          {{ form.yfcaseComplaintExhibit4|add_class:'form-control border border-dark' }}
+          <span class="help-block">
+            {{ form.yfcaseComplaintExhibit4.error }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {{ complaint_clent_id|json_script:"complaint_clent_id" }}
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <a href="{% url 'yfcase:home' %}" class="btn btn-secondary form-control" >返回</a>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input class="btn btn-primary form-control" type="submit" value="建立" />
+      </div>
+    </div>
+        
+  </form>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  /* global $ */
+  $(document).ready(function(){
+    const complaint_clent_id = JSON.parse(document.getElementById('complaint_clent_id').textContent);
+    document.getElementById("id_yfcaseComplaintLitigationAgent").value = complaint_clent_id; 
+    // 此為欄位驗証的JS
+    $('#Complaint_edit_form').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        yfcaseComplaintLitigationAgent: {
+          validators: {
+            notEmpty: {
+              message: '此一欄位不得為空'
+            }
+          }
+        },
+      }
+    });
+
+  });
+
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+
+</script>
+{% endblock content %}

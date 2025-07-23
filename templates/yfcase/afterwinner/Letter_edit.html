@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block style %}
+  <style type="text/css">
+    .help-block{
+      color:red;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="col-md p-2 bg-light">
+  <!-- 程式主題的部份 -->
+  <form action="{% url 'yfcase:letter_edit' yfcase.id %}" method="post" id="letter_edit_form" data-townships-url="{% url 'yfcase:ajax_load_townships' %}" >{% csrf_token %}
+    <!-- header -->
+    <h1>{{title}}</h1>
+    <div class="col mb-3 text-center fs-2 bg-warning rounded-pill">
+      存證信函 - 案號：{{ yfcase.yfcaseCaseNumber }}
+    </div>
+      
+    <div class="row">
+      <div class="col mb-3">
+        <div class="form-group">
+          <label for="{{ form.yfcaseLetterAgent.id_for_label }}">{{ form.yfcaseLetterAgent.label }}</label>
+          {{ form.yfcaseLetterAgent|add_class:'form-control border border-dark' }}
+          <span class="help-block">{{ form.yfcaseLetterAgent.error }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col mb-3">
+        <div class="form-group">
+          <label for="{{ form.yfcaseLetterSender.id_for_label }}">{{ form.yfcaseLetterSender.label }}</label>
+          {{ form.yfcaseLetterSender|add_class:'form-control border border-dark' }}
+          <span class="help-block">{{ form.yfcaseLetterSender.error }}</span>
+        </div>
+      </div>
+    </div>
+      
+    {{ letter_clent_id|json_script:"letter_clent_id" }}
+
+    <!-- footer -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <button type="button" class="btn btn-secondary col" data-dismiss="modal">返回</button>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input class="btn btn-primary col-md-3" type="submit" value="建立" />
+      </div>
+    </div>
+    
+  </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    const letter_clent_id = JSON.parse(document.getElementById('letter_clent_id').textContent);
+    document.getElementById("id_yfcaseLetterAgent").value = letter_clent_id; 
+    // 此為欄位驗証的JS
+    $('#letter_edit_form').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+      }
+    });
+
+  });
+
+  $(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+</script>
+{% endblock %}

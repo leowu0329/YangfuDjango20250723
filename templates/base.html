@@ -43,5 +43,66 @@
       {% block customize_js %}
       {% endblock customize_js %}
     </script>
+
+    <!-- 新建評量表 Modal -->
+    <div class="modal fade" id="createYfcaseModal" tabindex="-1" aria-labelledby="createYfcaseModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createYfcaseModalLabel">新建評量表</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="createYfcaseModalBody">
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+// Modal 打開時 AJAX 載入表單
+$('#createYfcaseModal').on('show.bs.modal', function (e) {
+  var modalBody = $('#createYfcaseModalBody');
+  modalBody.html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+  $.get('{% url "yfcase:yfcase_create" %}', function(data) {
+    // 只取 form 區塊
+    var formHtml = $(data).find('form');
+    if (formHtml.length) {
+      modalBody.html(formHtml);
+    } else {
+      modalBody.html('<div class="alert alert-danger">表單載入失敗</div>');
+    }
+  });
+});
+// 表單 AJAX 提交
+$(document).on('submit', '#createYfcaseModalBody form', function(e) {
+  e.preventDefault();
+  var form = $(this);
+  var modalBody = $('#createYfcaseModalBody');
+  $.ajax({
+    url: form.attr('action') || '{% url "yfcase:yfcase_create" %}',
+    type: form.attr('method') || 'POST',
+    data: form.serialize(),
+    success: function(data) {
+      // 若回傳有 form，代表有錯誤，重載 form
+      var formHtml = $(data).find('form');
+      if (formHtml.length) {
+        modalBody.html(formHtml);
+      } else {
+        // 成功，關閉 modal 並刷新
+        $('#createYfcaseModal').modal('hide');
+        location.reload();
+      }
+    },
+    error: function() {
+      modalBody.html('<div class="alert alert-danger">送出失敗，請稍後再試</div>');
+    }
+  });
+});
+</script>
   </body>
 </html>

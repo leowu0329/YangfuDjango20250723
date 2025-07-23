@@ -12,30 +12,37 @@ body {
   font-family: "Noto Sans TC", Roboto, Arial, "Microsoft JhengHei", "微軟正黑體", sans-serif;
 }
 
-.heading {
-  font-size: 2.5rem;
-  color: #2d4059;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  border-bottom: 3px solid #30aadd;
-  padding-bottom: 0.5rem;
-  letter-spacing: 2px;
-}
-
 .table-container {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(48,170,221,0.10);
+  padding: 2rem 1rem;
   margin-top: 2rem;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: transparent;
 }
 
 .table thead {
   background: linear-gradient(90deg, #30aadd 0%, #36d1c4 100%);
+}
+
+.table thead tr th {
   color: #fff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none;
+  padding: 1rem 0.5rem;
+  text-align: center;
 }
 
 .table tbody tr {
+  background: #f8fafc;
   transition: background 0.2s;
 }
 .table tbody tr:hover {
@@ -45,27 +52,46 @@ body {
 .table th, .table td {
   border: none;
   padding: 1rem 0.5rem;
+  text-align: center;
+  font-size: 1rem;
 }
 
-.accordion {
-  background: #30aadd;
+.table td[data-label="狀態"] {
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  font-size: 0.95em;
+  font-weight: 700;
+  border-radius: 1em;
   color: #fff;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(48,170,221,0.08);
-  transition: background 0.2s;
+  background: #30aadd;
+  letter-spacing: 1px;
+  box-shadow: 0 1px 4px rgba(48,170,221,0.10);
 }
-.accordion.active, .accordion:hover {
-  background: #36d1c4;
+.status-badge.closed {
+  background: #b0b0b0;
+}
+.status-badge.open {
+  background: #30aadd;
 }
 
-.panel {
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 2px 8px rgba(48,170,221,0.08);
-  margin-bottom: 1rem;
-  padding: 1rem;
+.table tbody tr td {
+  border-bottom: 1px solid #e0eafc;
+}
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.yfcase__number a {
+  color: #2d4059;
+  font-weight: 600;
+  text-decoration: none;
+}
+.yfcase__number a:hover {
+  color: #30aadd;
 }
 
 .btn {
@@ -110,6 +136,23 @@ body {
     margin: 0px;
     width: 80%;
   }
+  .status-badge {
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    font-size: 0.95em;
+    font-weight: 700;
+    border-radius: 1em;
+    color: #fff;
+    background: #30aadd;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 4px rgba(48,170,221,0.10);
+  }
+  .status-badge.closed {
+    background: #b0b0b0;
+  }
+  .status-badge.open {
+    background: #30aadd;
+  }
 }
 {% endblock customize_style %}
 
@@ -134,6 +177,7 @@ body {
     <table class="table">
       <thead>
         <tr>
+          <th>狀態</th>
           <th>案號</th>
           <th>兩週內<br>應買止日</th>
           <th>負責人</th>
@@ -146,6 +190,13 @@ body {
       <tbody>
         {% for yfcase in object_list %}
           <tr>
+            <td data-label="狀態">
+              {% if yfcase.yfcaseCaseStatus == '結案' %}
+                <span class="status-badge closed">結案</span>
+              {% else %}
+                <span class="status-badge open">在途</span>
+              {% endif %}
+            </td>
             <td data-label="案號" class="yfcase__number">
               <a href="{% url 'yfcase:yfcase_detail' yfcase.id %}" style="text-decoration: none;" >
                 {{yfcase.yfcaseCaseNumber}}
@@ -212,91 +263,7 @@ body {
     </table>
   </div>
 
-  <div class="table-accordion">
-      {% for yfcase in object_list %}
-        <button class="accordion">
-          {{yfcase.yfcaseCaseNumber}}
-          <br>
-          &emsp;&#10149;{{yfcase.fullAddress}}
-        </button>
-        <div class="panel border-start border-secondary border-3">
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">兩週內/應買日</div>
-            <div class="col-6" style="color:red;">
-              <!-- 兩週內 -->
-              {% for finaldecision in yfcase.finaldecisions.all %}
-                {% if yfcase.get_auction_1st.auctionDateFirst and finaldecision.finalDecision == '1拍進場' %}
-                  {{ yfcase.get_auction_1st.auctionDateFirst|less_two_week:"1拍"|default_if_none:"" }}
-                {% endif %}
-                {% if yfcase.get_auction_2nd.auctionDateSecond and finaldecision.finalDecision == '2拍進場' %}
-                  {{ yfcase.get_auction_2nd.auctionDateSecond|less_two_week:"2拍"|default_if_none:"" }}
-                {% endif %}
-                {% if yfcase.get_auction_3rd.auctionDateThird and finaldecision.finalDecision == '3拍進場' %}
-                  {{ yfcase.get_auction_3rd.auctionDateThird|less_two_week:"3拍"|default_if_none:"" }}
-                {% endif %}
-                {% if yfcase.get_auction_4th.auctionDateFourth and finaldecision.finalDecision == '4拍進場' %}
-                  {{ yfcase.get_auction_4th.auctionDateFourth|less_two_week:"4拍"|default_if_none:"" }}
-                {% endif %}
-              {% endfor %}
-              <!-- 應買止日 -->
-              {% for result in yfcase.get_result_stopBuyDate %}
-                {{ result.stopBuyDate|less_three_month:"應買止日"|default_if_none:"" }}
-              {% endfor %}  
-            </div>
-          </div>
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">負責人</div>
-            <div class="col-6">{{ yfcase.user }}</div>
-          </div>
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">最終判定</div>
-            <div class="col-6">
-              {% for finaldecision in yfcase.finaldecisions.all %}
-                {{ finaldecision.finalDecision }}<br>
-              {% endfor %}  
-            </div>
-          </div>
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">執行結果</div>
-            <div class="col-6">
-              {% for result in yfcase.results.all %}
-                {% if result.actionResult == '等待優購' or result.actionResult == '遭優購' or result.actionResult == '無人優購' %}
-                  得標
-                {% else %}
-                  {{ result.actionResult|default_if_none:"" }}
-                {% endif %}
-              {% endfor %} 
-            </div>
-          </div>
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">優購結果</div>
-            <div class="col-6">
-              {% for result in yfcase.results.all %}
-                {% if result.actionResult == '等待優購' or result.actionResult == '遭優購' or result.actionResult == '無人優購' %}
-                  {{ result.actionResult }}
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-          <div class="row row-content fw-bolder">
-            <div class="col-3 text-dark bg-warning">標的編號</div>
-            <div class="col-6">
-              {% for result in yfcase.results.all %}
-                {{ result.objectNumber|default_if_none:"" }}
-              {% endfor %}
-            </div>
-          </div>
-          <div class="row row-button">
 
-            <div class="col-6 justify-content-center">
-              <a href="{% url 'yfcase:yfcase_detail' yfcase.id %}" class="btn btn-secondary btn-sm" >
-                查看(編輯)明細
-              </a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-  </div>
   {% include "pagination.html" %}
 </div>
 {% endblock %}

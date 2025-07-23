@@ -6,68 +6,75 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-
     <header class="header-area">
       <!-- site-navbar start -->
       <div class="navbar-area">
         <div class="container">
           <nav class="site-navbar">
             <!-- site logo -->
-            <a href="/" class="site-logo">首頁</a>
+            <a href="/" class="site-logo">揚富開發</a>
 
             <!-- site menu/nav -->
             <ul style="z-index: 100;">
-              <li><a href="{% url 'yfcase:home_all_include_close' %}" class="fs-5">所有<small>(含結案)</small></a></li>
-              <li><a href="{% url 'yfcase:home_all' %}" class="fs-5">所有<small>(在途)</small></a></li>
-              <li><a href="{% url 'yfcase:home' %}" class="fs-5">個人</a></li>
-              <li><a href="{% url 'yfcase:yfcase_create' %}" class="fs-5">新建評量表</a></li>
+              <li>
+                <a href="{% url 'yfcase:home_all_include_close' %}" class="fs-5">所有<small>(含結案)</small></a>
+              </li>
+              <li>
+                <a href="{% url 'yfcase:home_all' %}" class="fs-5">所有<small>(在途)</small></a>
+              </li>
+              <li>
+                <a href="{% url 'yfcase:home' %}" class="fs-5">個人</a>
+              </li>
+              <li>
+                <a href="#" class="fs-5" data-bs-toggle="modal" data-bs-target="#createYfcaseModal" id="createYfcaseModalBtn">新建評量表</a>
+              </li>
 
-              <li><a href="#" class="fs-5">登錄者：<span class="text-warning">{{user.userFullName}}</span></a></li>
-              <li><a href="{% url 'logout' %}" class="fs-5">登出</a></li>
+              <li>
+                <a href="#" class="fs-5">登錄者：<span class="text-warning">{{ user.userFullName }}</span></a>
+              </li>
+              <li>
+                <a href="{% url 'logout' %}" class="fs-5">登出</a>
+              </li>
             </ul>
 
             <!-- nav-toggler for mobile version only -->
-            <button class="nav-toggler">
-              <span></span>
-            </button>
+            <button class="nav-toggler"><span></span></button>
           </nav>
         </div>
-      </div><!-- navbar-area end -->
+      </div>
+      <!-- navbar-area end -->
     </header>
-
   {% endif %}
 {% endblock %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   // define all UI variable
-  const navToggler = document.querySelector('.nav-toggler');
-  const navMenu = document.querySelector('.site-navbar ul');
-  const navLinks = document.querySelectorAll('.site-navbar a');
-
+  const navToggler = document.querySelector('.nav-toggler')
+  const navMenu = document.querySelector('.site-navbar ul')
+  const navLinks = document.querySelectorAll('.site-navbar a')
+  
   // load all event listners
-  allEventListners();
-
+  allEventListners()
+  
   // functions of all event listners
   function allEventListners() {
     // toggler icon click event
-    navToggler.addEventListener('click', togglerClick);
+    navToggler.addEventListener('click', togglerClick)
     // nav links click event
-    navLinks.forEach( elem => elem.addEventListener('click', navLinkClick));
+    navLinks.forEach((elem) => elem.addEventListener('click', navLinkClick))
   }
-
+  
   // togglerClick function
   function togglerClick() {
-    navToggler.classList.toggle('toggler-open');
-    navMenu.classList.toggle('open');
+    navToggler.classList.toggle('toggler-open')
+    navMenu.classList.toggle('open')
   }
-
+  
   // navLinkClick function
   function navLinkClick() {
-    if(navMenu.classList.contains('open')) {
-      navToggler.click();
+    if (navMenu.classList.contains('open')) {
+      navToggler.click()
     }
   }
 </script>
-
-
